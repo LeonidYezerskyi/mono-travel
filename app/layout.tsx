@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Syne, Space_Grotesk, Cormorant_Garamond } from "next/font/google";
+import { LanguageProvider } from "./_context/LanguageContext";
 import "./_styles/globals.css";
 
 const syne = Syne({
@@ -55,7 +56,7 @@ export default function RootLayout({
       className={`${syne.variable} ${spaceGrotesk.variable} ${cormorantGaramond.variable}`}
     >
       <body className="bg-background text-foreground font-sans antialiased">
-        {children}
+        <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
   );
