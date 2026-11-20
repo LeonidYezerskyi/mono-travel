@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Syne, Space_Grotesk, Cormorant_Garamond } from "next/font/google";
+import { Unbounded, Manrope, Cormorant_Garamond } from "next/font/google";
 import { LanguageProvider } from "./_context/LanguageContext";
 import "./_styles/globals.css";
 
-const syne = Syne({
-  subsets: ["latin"],
+const unbounded = Unbounded({
+  subsets: ["latin", "cyrillic"],
   weight: ["700", "800"],
   variable: "--font-syne",
 });
 
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
+const manrope = Manrope({
+  subsets: ["latin", "cyrillic"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-space",
 });
@@ -53,7 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${spaceGrotesk.variable} ${cormorantGaramond.variable}`}
+      className={`${unbounded.variable} ${manrope.variable} ${cormorantGaramond.variable}`}
     >
       <body className="bg-background text-foreground font-sans antialiased">
         <LanguageProvider>{children}</LanguageProvider>

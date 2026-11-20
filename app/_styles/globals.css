@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #000000;
+  --background: #000000;
+  --foreground: #ffffff;
 }
 
 @theme inline {
@@ -31,4 +31,37 @@ body {
 
 .editorial-photo {
   filter: grayscale(100%) contrast(155%) brightness(95%);
+}
+
+@keyframes monoMarquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@layer utilities {
+  .mono-marquee-track {
+    display: flex;
+    flex-wrap: nowrap;
+    width: max-content;
+    animation: monoMarquee 22s linear infinite;
+    will-change: transform;
+  }
+
+  .mono-marquee-track:hover,
+  .mono-marquee-track:active {
+    animation-play-state: paused;
+  }
+
+  @media (min-width: 768px) {
+    .mono-marquee-track {
+      animation: none;
+      width: 100%;
+      flex-wrap: wrap;
+      transform: none;
+    }
+  }
 }
