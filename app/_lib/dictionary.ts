@@ -6,6 +6,27 @@ export interface ManifestoCard {
   description: string;
   tag: string;
 }
+export interface LocalizedText {
+  uk: string;
+  en: string;
+}
+
+export type DestinationId = "iceland" | "japan" | "patagonia" | "morocco";
+
+export interface DestinationItem {
+  id: DestinationId;
+  code: string;
+  country: string;
+  tabTitle: string;
+  badge: string;
+  title: string;
+  description: string;
+  coords: string;
+  season: string;
+  duration: string;
+  pricePerDay: number;
+  image: string;
+}
 
 export interface Dictionary {
   nav: {
@@ -41,11 +62,16 @@ export interface Dictionary {
   };
   destinations: {
     eyebrow: string;
+    hint: string;
     heading: string;
     coordinatesLabel: string;
+    seasonLabel: string;
+    durationLabel: string;
     rateLabel: string;
     perDay: string;
+    requestCta: string;
     selectCta: string;
+    items: DestinationItem[];
   };
   builder: {
     eyebrow: string;
@@ -137,12 +163,78 @@ export const dictionary: Record<Language, Dictionary> = {
       ],
     },
     destinations: {
-      eyebrow: "CURATED ROUTES // 02",
+      eyebrow: "[ 02 ] CURATED DESTINATIONS",
+      hint: "SELECT A POINT ON THE MAP",
       heading: "Selected Territories",
-      coordinatesLabel: "Coordinates",
+      coordinatesLabel: "COORDINATES:",
+      seasonLabel: "RECOMMENDED SEASON:",
+      durationLabel: "OPTIMAL DURATION:",
       rateLabel: "Base Rate",
       perDay: "/ day",
+      requestCta: "REQUEST PLANS →",
       selectCta: "Use in Builder",
+      items: [
+        {
+          id: "iceland",
+          code: "01",
+          country: "ICELAND",
+          tabTitle: "BLACK BEACHES & GLACIERS",
+          badge: "[ POLAR FLAGSHIP ]",
+          title: "ICELAND: VOLCANOES & AURORA",
+          description:
+            "Helicopter expeditions over Vík's black sand beaches, nights in a glass lodge beneath the Northern Lights, and private geothermal springs.",
+          coords: "64.1466° N, 21.9426° W",
+          season: "OCTOBER — MARCH",
+          duration: "10 DAYS / 9 NIGHTS",
+          pricePerDay: 4200,
+          image: "/images/iceland.jpg",
+        },
+        {
+          id: "japan",
+          code: "02",
+          country: "JAPAN",
+          tabTitle: "KYOTO & ZEN MINIMALISM",
+          badge: "[ CULTURAL AVANT-GARDE ]",
+          title: "JAPAN: KYOTO & ZEN ARCHITECTURE",
+          description:
+            "Private tea ceremonies with masters of century-old schools, secluded stays in historic ryokans, and exclusive access to zen rock gardens.",
+          coords: "35.0116° N, 135.7681° E",
+          season: "APRIL — NOVEMBER",
+          duration: "12 DAYS / 11 NIGHTS",
+          pricePerDay: 4800,
+          image: "/images/japan.jpg",
+        },
+        {
+          id: "patagonia",
+          code: "03",
+          country: "PATAGONIA",
+          tabTitle: "EDGE OF THE WORLD & WINDS",
+          badge: "[ EDGE OF THE WORLD ]",
+          title: "PATAGONIA: GLACIERS & WINDS",
+          description:
+            "Private trekking to Torres del Paine, puma tracking with wildlife naturalists, and a private yacht along the blue ice walls of Moreno.",
+          coords: "51.2532° S, 72.8863° W",
+          season: "NOVEMBER — MARCH",
+          duration: "14 DAYS / 13 NIGHTS",
+          pricePerDay: 4500,
+          image: "/images/patagonia.jpg",
+        },
+        {
+          id: "morocco",
+          code: "04",
+          country: "MOROCCO",
+          tabTitle: "SAHARA & MONUMENTAL KASBAHS",
+          badge: "[ DESERT MINIMALISM ]",
+          title: "MOROCCO: SAHARA & MONUMENTAL KASBAHS",
+          description:
+            "Bespoke desert camp deep inside the Erg Chebbi dunes, helicopter transfers across the Atlas Mountains, and private architectural riads.",
+          coords: "31.6295° N, 7.9811° W",
+          season: "OCTOBER — APRIL",
+          duration: "8 DAYS / 7 NIGHTS",
+          pricePerDay: 3900,
+          image: "/images/morocco.jpg",
+        },
+      ],
     },
     builder: {
       eyebrow: "CUSTOMIZER // 03",
@@ -230,14 +322,79 @@ export const dictionary: Record<Language, Dictionary> = {
         },
       ],
     },
-
     destinations: {
-      eyebrow: "КУРАТОРСЬКІ МАРШРУТИ // 02",
+      eyebrow: "[ 02 ] КУРАТОРСЬКІ НАПРЯМКИ",
+      hint: "ОБЕРІТЬ ТОЧКУ НА КАРТІ",
       heading: "Обрані території",
-      coordinatesLabel: "Координати",
+      coordinatesLabel: "КООРДИНАТИ:",
+      seasonLabel: "РЕКОМЕНДОВАНИЙ СЕЗОН:",
+      durationLabel: "ОПТИМАЛЬНА ТРИВАЛІСТЬ:",
       rateLabel: "Базова ставка",
       perDay: "/ день",
+      requestCta: "ЗАПИТАТИ ПЛАНИ →",
       selectCta: "Обрати в конструкторі",
+      items: [
+        {
+          id: "iceland",
+          code: "01",
+          country: "ІСЛАНДІЯ",
+          tabTitle: "ЧОРНІ ПЛЯЖІ ТА ЛЬОДОВИКИ",
+          badge: "[ ПОЛЯРНИЙ ФЛАГМАН ]",
+          title: "ІСЛАНДІЯ: ВУЛКАНИ ТА СЯЙВО",
+          description:
+            "Подорожі на гелікоптерах над чорними пляжами Вік, ночі у скляному лоджі під Північним Сяйвом та приватні геотермальні джерела.",
+          coords: "64.1466° N, 21.9426° W",
+          season: "ЖОВТЕНЬ — БЕРЕЗЕНЬ",
+          duration: "10 ДНІВ / 9 НОЧЕЙ",
+          pricePerDay: 4200,
+          image: "/images/iceland.jpg",
+        },
+        {
+          id: "japan",
+          code: "02",
+          country: "ЯПОНІЯ",
+          tabTitle: "КІОТО & ДЗЕН-МІНІМАЛІЗМ",
+          badge: "[ КУЛЬТУРНИЙ АВАНГАРД ]",
+          title: "ЯПОНІЯ: КІОТО & ДЗЕН-АРХІТЕКТУРА",
+          description:
+            "Закриті чайні церемонії з майстрами столітніх шкіл, приватне проживання у старовинних рьоканах та власні сади каміння.",
+          coords: "35.0116° N, 135.7681° E",
+          season: "КВІТЕНЬ — ЛИСТОПАД",
+          duration: "12 ДНІВ / 11 НОЧЕЙ",
+          pricePerDay: 4800,
+          image: "/images/japan.jpg",
+        },
+        {
+          id: "patagonia",
+          code: "03",
+          country: "ПАТАГОНІЯ",
+          tabTitle: "КРАЙ ЗЕМЛІ ТА ВІТРІВ",
+          badge: "[ ЕКСПЕДИЦІЯ КРАЙ ЗЕМЛІ ]",
+          title: "ПАТАГОНІЯ: ЛЬОДОВИКИ ТА ВІТРИ",
+          description:
+            "Трекінг до веж Торрес-дель-Пайне, спостереження за пумами, приватна яхта вздовж блакитних крижаних стін Періто-Морено.",
+          coords: "51.2532° S, 72.8863° W",
+          season: "ЛИСТОПАД — БЕРЕЗЕНЬ",
+          duration: "14 ДНІВ / 13 НОЧЕЙ",
+          pricePerDay: 4500,
+          image: "/images/patagonia.jpg",
+        },
+        {
+          id: "morocco",
+          code: "04",
+          country: "МАРОККО",
+          tabTitle: "САХАРА & МОНУМЕНТАЛЬНІ КАСБИ",
+          badge: "[ ПУСТЕЛЬНИЙ МІНІМАЛІЗМ ]",
+          title: "МАРОККО: САХАРА & МОНУМЕНТАЛЬНІ КАСБИ",
+          description:
+            "Глемпінг преміум-класу в глибоких дюнах Ерг-Шеббі, трансфери на гелікоптерах через Атлаські гори та приватні ріади.",
+          coords: "31.6295° N, 7.9811° W",
+          season: "ЖОВТЕНЬ — КВІТЕНЬ",
+          duration: "8 ДНІВ / 7 НОЧЕЙ",
+          pricePerDay: 3900,
+          image: "/images/morocco.jpg",
+        },
+      ],
     },
     builder: {
       eyebrow: "КОНСТРУКТОР // 03",

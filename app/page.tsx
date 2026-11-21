@@ -1,3 +1,4 @@
+import { DestinationShowcase } from "./_components/DestinationShowcase";
 import { Header } from "./_components/Header";
 import { HeroSection } from "./_components/HeroSection";
 import { ManifestoSection } from "./_components/ManifestoSection";
@@ -11,6 +12,7 @@ export default function HomePage() {
       <main>
         <HeroSection />
         <ManifestoSection />
+        <DestinationShowcase />
       </main>
     </div>
   );
