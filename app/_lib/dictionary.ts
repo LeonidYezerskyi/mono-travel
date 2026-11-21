@@ -1,5 +1,12 @@
 export type Language = "en" | "uk";
 
+export interface ManifestoCard {
+  index: string;
+  title: string;
+  description: string;
+  tag: string;
+}
+
 export interface Dictionary {
   nav: {
     destinations: string;
@@ -26,6 +33,11 @@ export interface Dictionary {
     cardCta: string;
     cardAlt: string;
     marquee: string[];
+  };
+  manifesto: {
+    eyebrow: string;
+    motto: string;
+    cards: ManifestoCard[];
   };
   destinations: {
     eyebrow: string;
@@ -97,6 +109,33 @@ export const dictionary: Record<Language, Dictionary> = {
         "• PATAGONIA · EDGE OF THE WORLD & PRIVATE EXPEDITIONS",
       ],
     },
+    manifesto: {
+      eyebrow: "[ 01 ] PHILOSOPHY",
+      motto: "Contrast. Monumentality. Purity.",
+      cards: [
+        {
+          index: "01.01 — AESTHETICS",
+          title: "ARCHITECTURAL APPROACH",
+          description:
+            "We curate hotels and villas defined by conceptual architecture — from brutalist cliffside retreats to glass domes at the edge of a glacier.",
+          tag: "[ NO NOISE • PURE STYLE ]",
+        },
+        {
+          index: "01.02 — PRIVACY",
+          title: "ABSOLUTE ISOLATION",
+          description:
+            "Private charters, dedicated chefs, and closed locations away from tourist crowds. Only you, raw nature, and monumental silence.",
+          tag: "[ VIP LOGISTICS • 24/7 ]",
+        },
+        {
+          index: "01.03 — DETAILS",
+          title: "CURATED GUIDANCE",
+          description:
+            "Every day of your itinerary is timed to the second: from morning coffee overlooking volcanoes to dinner beneath southern constellations.",
+          tag: "[ PERFECTION ]",
+        },
+      ],
+    },
     destinations: {
       eyebrow: "CURATED ROUTES // 02",
       heading: "Selected Territories",
@@ -164,6 +203,34 @@ export const dictionary: Record<Language, Dictionary> = {
         "• ПАТАГОНІЯ · КРАЙ СВІТУ ТА ПРИВАТНІ ЕКСПЕДИЦІЇ",
       ],
     },
+    manifesto: {
+      eyebrow: "[ 01 ] ФІЛОСОФІЯ",
+      motto: "Контраст. Монументальність. Чистота.",
+      cards: [
+        {
+          index: "01.01 — ЕСТЕТИКА",
+          title: "АРХІТЕКТУРНИЙ ПІДХІД",
+          description:
+            "Ми обираємо готелі та вілли з концептуальною архітектурою — від бруталістських готелів у скелях до скляних куполів на краю льодовика.",
+          tag: "[ БЕЗ ШУМУ • ЛИШЕ СТИЛЬ ]",
+        },
+        {
+          index: "01.02 — ПРИВАТНІСТЬ",
+          title: "АБСОЛЮТНА ІЗОЛЯЦІЯ",
+          description:
+            "Приватні чартери, персональні шеф-кухарі та закриті локації без юрб туристів. Тільки ви, велична природа та монументальна тиша.",
+          tag: "[ VIP ЛОГІСТИКА • 24/7 ]",
+        },
+        {
+          index: "01.03 — ДЕТАЛІ",
+          title: "КУРАТОРСЬКИЙ СУПРОВІД",
+          description:
+            "Кожен день маршруту розрахований до секунд: від ранкової кави з видом на вулкани до вечері під південними сузір'ями.",
+          tag: "[ БЕЗДОГАННІСТЬ ]",
+        },
+      ],
+    },
+
     destinations: {
       eyebrow: "КУРАТОРСЬКІ МАРШРУТИ // 02",
       heading: "Обрані території",
