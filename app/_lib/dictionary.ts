@@ -15,8 +15,17 @@ export interface Dictionary {
     titleAccent: string;
     titleLine2: string;
     subtitle: string;
+    badge1: string;
+    badge2: string;
+    discussCta: string;
     primaryCta: string;
     secondaryCta: string;
+    cardFlagship: string;
+    cardTitle: string;
+    cardSub: string;
+    cardCta: string;
+    cardAlt: string;
+    marquee: string[];
   };
   destinations: {
     eyebrow: string;
@@ -64,14 +73,29 @@ export const dictionary: Record<Language, Dictionary> = {
       menuClose: "Close",
     },
     hero: {
-      eyebrow: "ARCHITECTURAL EXPEDITIONS // 01",
-      titleLine1: "SILENCE,",
-      titleAccent: "FORM",
-      titleLine2: "& SPACE",
+      eyebrow: "[ BOUTIQUE TRAVEL BUREAU / PRIVATE EXPEDITIONS ]",
+      titleLine1: "JOURNEYS",
+      titleAccent: "without",
+      titleLine2: "HALF-TONES",
       subtitle:
-        "Bespoke architectural journeys across austere landscapes and quiet sanctuaries.",
-      primaryCta: "Configure Expedition",
-      secondaryCta: "Explore Routes",
+        "We design unique private expeditions for individuals seeking absolute authenticity, architectural aesthetics, and profound solitude in the world's most remote landscapes.",
+      badge1: "100% PRIVATE",
+      badge2: "ONLY HIGH END",
+      discussCta: "DISCUSS A JOURNEY →",
+      primaryCta: "Explore Location",
+      secondaryCta: "Configure Expedition",
+      cardFlagship: "FLAGSHIP 2026",
+      cardTitle: "POLAR SYMPHONY OF ICELAND",
+      cardSub:
+        "64.1466° N, 21.9426° W — Private Helicopters & Black Sand Beaches",
+      cardCta: "Explore Location →",
+      cardAlt: "Monochrome landscape of Iceland",
+      marquee: [
+        "• ICELAND · LAVA FIELDS & GEOTHERMAL RESIDENCES",
+        "• JAPAN · KYOTO, NAOSHIMA & PRIVATE RYOKANS",
+        "• NORWAY · FJORDS & ARCTIC ARCHITECTURE",
+        "• PATAGONIA · EDGE OF THE WORLD & PRIVATE EXPEDITIONS",
+      ],
     },
     destinations: {
       eyebrow: "CURATED ROUTES // 02",
@@ -117,14 +141,28 @@ export const dictionary: Record<Language, Dictionary> = {
       menuClose: "Закрити",
     },
     hero: {
-      eyebrow: "АРХІТЕКТУРНІ ЕКСПЕДИЦІЇ // 01",
-      titleLine1: "ТИША,",
-      titleAccent: "ФОРМА",
-      titleLine2: "Й ПРОСТІР",
+      eyebrow: "[ БУТИКОВЕ ТУРИСТИЧНЕ БЮРО / ПРИВАТНІ ЕКСПЕДИЦІЇ ]",
+      titleLine1: "ПОДОРОЖІ",
+      titleAccent: "без",
+      titleLine2: "НАПІВТОНІВ",
       subtitle:
-        "Індивідуальні архітектурні маршрути крізь суворі ландшафти та тихі простори.",
-      primaryCta: "Скласти маршрут",
-      secondaryCta: "Напрямки",
+        "Ми проєктуємо унікальні закриті експедиції для тих, хто шукає абсолютну автентичність, архітектурну естетику та глибоку самотність у найвіддаленіших куточках нашої планети.",
+      badge1: "100% ПРИВАТНО",
+      badge2: "ЛИШЕ ВИСОКИЙ РІВЕНЬ",
+      discussCta: "ОБГОВОРИТИ ПОДОРОЖ →",
+      primaryCta: "Дослідити локацію",
+      secondaryCta: "Скласти маршрут",
+      cardFlagship: "ФЛАГМАН 2026",
+      cardTitle: "ПОЛЯРНА СИМФОНІЯ ІСЛАНДІЇ",
+      cardSub: "64.1466° N, 21.9426° W — Приватні гелікоптери & Чорні пляжі",
+      cardCta: "Дослідити локацію →",
+      cardAlt: "Монохромний ландшафт Ісландії",
+      marquee: [
+        "• ІСЛАНДІЯ · ЛАВОВІ ПОЛЯ ТА ГЕОТЕРМАЛЬНІ РЕЗИДЕНЦІЇ",
+        "• ЯПОНІЯ · КІОТО, НАОШІМА ТА ПРИВАТНІ РЬОКАНИ",
+        "• НОРВЕГІЯ · ФІОРДИ ТА АРКТИЧНА АРХІТЕКТУРА",
+        "• ПАТАГОНІЯ · КРАЙ СВІТУ ТА ПРИВАТНІ ЕКСПЕДИЦІЇ",
+      ],
     },
     destinations: {
       eyebrow: "КУРАТОРСЬКІ МАРШРУТИ // 02",

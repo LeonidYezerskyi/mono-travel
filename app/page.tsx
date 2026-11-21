@@ -1,10 +1,13 @@
 import { Header } from "./_components/Header";
+import { HeroSection } from "./_components/HeroSection";
 
 export default function HomePage() {
   return (
-    <div className="bg-black text-white min-h-screen w-full overflow-x-clip">
+    <div className="min-h-screen w-full max-w-full bg-black text-white overflow-x-clip">
       <Header />
-      <main className="pt-23 md:pt-25 px-4 md:px-8"></main>
+      <main>
+        <HeroSection />
+      </main>
     </div>
   );
 }

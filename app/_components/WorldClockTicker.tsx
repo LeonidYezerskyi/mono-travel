@@ -51,7 +51,7 @@ export function WorldClockTicker() {
       <div className="flex items-center gap-2 md:min-w-52 lg:min-w-72 px-3 lg:px-5 py-2 bg-black shrink-0">
         <span
           aria-hidden="true"
-          className="inline-block w-1.5 h-1.5 bg-white/40 shrink-0"
+          className="inline-block w-2 h-2 rounded-full bg-white/75 mono-second-pulse shrink-0"
         />
         <span className="font-semibold tracking-[0.12em] lg:tracking-[0.14em] whitespace-nowrap">
           {statusText}
