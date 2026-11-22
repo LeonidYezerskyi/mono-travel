@@ -1,4 +1,5 @@
 import { DestinationShowcase } from "./_components/DestinationShowcase";
+import { ExpeditionBuilder } from "./_components/ExpeditionBuilder";
 import { Header } from "./_components/Header";
 import { HeroSection } from "./_components/HeroSection";
 import { ItinerarySection } from "./_components/ItinerarySection";
@@ -15,6 +16,7 @@ export default function HomePage() {
         <ManifestoSection />
         <DestinationShowcase />
         <ItinerarySection />
+        <ExpeditionBuilder />
       </main>
     </div>
   );

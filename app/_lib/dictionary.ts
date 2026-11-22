@@ -42,6 +42,13 @@ export interface DestinationItem {
   pricePerDay: number;
   image: string;
 }
+export type ExpeditionExtraId = "architect" | "helicopter" | "film";
+
+export interface ExpeditionExtraOption {
+  id: ExpeditionExtraId;
+  label: string;
+  price: number;
+}
 
 export interface Dictionary {
   nav: {
@@ -94,15 +101,18 @@ export interface Dictionary {
   };
   builder: {
     eyebrow: string;
-    heading: string;
-    destinationCol: string;
-    parametersCol: string;
-    summaryCol: string;
+    hint: string;
+    colDestination: string;
+    colParameters: string;
+    colExtras: string;
     daysLabel: string;
+    dayUnit: string;
     guestsLabel: string;
-    extrasLabel: string;
-    totalLabel: string;
-    bookCta: string;
+    guestUnit: string;
+    extras: ExpeditionExtraOption[];
+    summaryLabel: string;
+    summarySub: string;
+    openModalCta: string;
   };
   modal: {
     heading: string;
@@ -377,16 +387,23 @@ export const dictionary: Record<Language, Dictionary> = {
       ],
     },
     builder: {
-      eyebrow: "CUSTOMIZER // 03",
-      heading: "Expedition Builder",
-      destinationCol: "01. Territory",
-      parametersCol: "02. Scale & Add-ons",
-      summaryCol: "03. Estimate",
-      daysLabel: "Duration (days)",
-      guestsLabel: "Travelers",
-      extrasLabel: "Architectural Add-ons",
-      totalLabel: "Estimated Total",
-      bookCta: "Request Consultation",
+      eyebrow: "[ 04 ] EXPEDITION BUILDER",
+      hint: "CONFIGURE ROUTE & PARAMETERS",
+      colDestination: "01 / DESTINATION",
+      colParameters: "02 / DURATION & GUESTS",
+      colExtras: "03 / BESPOKE ADD-ONS",
+      daysLabel: "DURATION (3–14 DAYS)",
+      dayUnit: "DAYS",
+      guestsLabel: "GUESTS (1–6 PAX)",
+      guestUnit: "PAX",
+      extras: [
+        { id: "architect", label: "PRIVATE ARCHITECT", price: 4500 },
+        { id: "helicopter", label: "HELICOPTER CHARTER", price: 8500 },
+        { id: "film", label: "ANALOG FILM SHOOT", price: 3200 },
+      ],
+      summaryLabel: "ESTIMATED EXPEDITION TOTAL",
+      summarySub: "PRIVATE CONCIERGE & BESPOKE LOGISTICS INCLUDED",
+      openModalCta: "REQUEST EXPEDITION →",
     },
     modal: {
       heading: "Expedition Inquiry",
@@ -658,16 +675,23 @@ export const dictionary: Record<Language, Dictionary> = {
       ],
     },
     builder: {
-      eyebrow: "КОНСТРУКТОР // 03",
-      heading: "Конструктор експедиції",
-      destinationCol: "01. Територія",
-      parametersCol: "02. Масштаб та опції",
-      summaryCol: "03. Розрахунок",
-      daysLabel: "Тривалість (днів)",
-      guestsLabel: "Учасники",
-      extrasLabel: "Додаткові опції",
-      totalLabel: "Орієнтовна вартість",
-      bookCta: "Замовити консультацію",
+      eyebrow: "[ 04 ] КОНСТРУКТОР ЕКСПЕДИЦІЇ",
+      hint: "НАЛАШТУЙТЕ МАРШРУТ ТА ПАРАМЕТРИ",
+      colDestination: "01 / НАПРЯМОК",
+      colParameters: "02 / ТРИВАЛІСТЬ ТА ГОСТІ",
+      colExtras: "03 / ПРИВАТНІ ОПЦІЇ",
+      daysLabel: "ТРИВАЛІСТЬ (3–14 ДНІВ)",
+      dayUnit: "ДНІВ",
+      guestsLabel: "КІЛЬКІСТЬ ГОСТЕЙ (1–6)",
+      guestUnit: "ГОСТЕЙ",
+      extras: [
+        { id: "architect", label: "ПРИВАТНИЙ АРХІТЕКТОР", price: 4500 },
+        { id: "helicopter", label: "ГЕЛІКОПТЕР", price: 8500 },
+        { id: "film", label: "ПЛІВКОВА ЗЙОМКА", price: 3200 },
+      ],
+      summaryLabel: "ОРІЄНТОВНА ВАРТІСТЬ ЕКСПЕДИЦІЇ",
+      summarySub: "ПРИВАТНИЙ КОНСЬЄРЖ ТА ІНДИВІДУАЛЬНА ЛОГІСТИКА",
+      openModalCta: "ОФОРМИТИ ЗАПИТ →",
     },
     modal: {
       heading: "Заявка на експедицію",
