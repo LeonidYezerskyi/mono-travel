@@ -53,6 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${unbounded.variable} ${manrope.variable} ${cormorantGaramond.variable}`}
     >
       <body className="bg-background text-foreground font-sans antialiased">

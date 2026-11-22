@@ -66,6 +66,18 @@ export interface BookingSummaryData {
   estimatedPrice?: number | string;
 }
 
+export interface ErrorPageDictionary {
+  topLeft: string;
+  topRight: string;
+  status: string;
+  title: string;
+  description: string;
+  retry: string;
+  home: string;
+  brand: string;
+  footerStatus: string;
+}
+
 export interface Dictionary {
   nav: {
     destinations: string;
@@ -193,6 +205,7 @@ export interface Dictionary {
       href: string;
     }[];
   };
+  errorPage: ErrorPageDictionary;
 }
 
 export const dictionary: Record<Language, Dictionary> = {
@@ -557,6 +570,18 @@ export const dictionary: Record<Language, Dictionary> = {
         { label: "LEGAL TERMS", href: "#philosophy" },
       ],
     },
+    errorPage: {
+      topLeft: "MONO TRAVEL // SYSTEM",
+      topRight: "[ RUNTIME FAULT ]",
+      status: "STATUS: INTERRUPTION DETECTED",
+      title: "EXPEDITION INTERRUPTED",
+      description:
+        "An unexpected error interrupted this route. Retry the current segment or return to the main page.",
+      retry: "RETRY",
+      home: "RETURN TO BASE",
+      brand: "MONO TRAVEL",
+      footerStatus: "ERROR BOUNDARY ACTIVE",
+    },
   },
   uk: {
     nav: {
@@ -916,6 +941,18 @@ export const dictionary: Record<Language, Dictionary> = {
         { label: "TELEGRAM PRIVÉ", href: "#builder" },
         { label: "ПРАВОВІ УМОВИ", href: "#philosophy" },
       ],
+    },
+    errorPage: {
+      topLeft: "MONO TRAVEL // СИСТЕМА",
+      topRight: "[ ЗБІЙ ВИКОНАННЯ ]",
+      status: "СТАТУС: ПЕРЕРИВАННЯ МАРШРУТУ",
+      title: "ЕКСПЕДИЦІЮ ПЕРЕРВАНО",
+      description:
+        "Під час завантаження сегмента виникла неочікувана помилка. Спробуйте повторити спробу або поверніться на головну.",
+      retry: "ПОВТОРИТИ",
+      home: "НА ГОЛОВНУ",
+      brand: "MONO TRAVEL",
+      footerStatus: "ЗАХИСТ АКТИВНИЙ",
     },
   },
 };
