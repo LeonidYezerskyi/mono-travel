@@ -1,6 +1,5 @@
 import { Logo } from "./Logo";
 import { NavbarClient } from "./NavbarClient";
-import { WorldClockTicker } from "./WorldClockTicker";
 
 interface HeaderProps {
   onOpenBooking?: () => void;
@@ -8,9 +7,9 @@ interface HeaderProps {
 
 export function Header({ onOpenBooking }: HeaderProps) {
   return (
-    <div className="w-full max-w-full bg-black text-white sticky top-0 z-40">
-      <header className=" w-full max-w-full bg-black text-white border-b border-white/25">
-        <div className="w-full max-w-full flex items-center justify-between gap-4 lg:gap-5 xl:gap-6 h-14 md:h-16 lg:h-18 pl-3 md:pl-4 lg:pl-6 xl:pl-8 pr-4 md:pr-5 lg:pr-6 xl:pr-8 bg-black">
+    <div className="sticky top-0 z-40 w-full max-w-full bg-black text-white">
+      <header className="w-full max-w-full border-b border-white/25 bg-black text-white">
+        <div className="flex h-14 w-full max-w-full items-center justify-between gap-4 bg-black pl-3 pr-4 md:h-16 md:pl-4 md:pr-5 lg:h-18 lg:gap-5 lg:pl-6 lg:pr-6 xl:gap-6 xl:pl-8 xl:pr-8">
           <Logo />
           <NavbarClient onOpenBooking={onOpenBooking} />
         </div>

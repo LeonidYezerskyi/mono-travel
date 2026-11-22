@@ -14,7 +14,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
 
   const navLinks = [
     {
-      href: "#manifesto",
+      href: "#philosophy",
       code: "01.",
       label: lang === "uk" ? "ФІЛОСОФІЯ" : "PHILOSOPHY",
     },
@@ -24,7 +24,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
       label: lang === "uk" ? "НАПРЯМКИ" : "DESTINATIONS",
     },
     {
-      href: "#itineraries",
+      href: "#itinerary",
       code: "03.",
       label: lang === "uk" ? "МАРШРУТИ" : "ITINERARIES",
     },
@@ -50,6 +50,9 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
   useEffect(() => {
     if (!mobileMenuOpen) return;
 
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMobileMenuOpen(false);
@@ -57,7 +60,10 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
     };
 
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [mobileMenuOpen]);
 
   return (
@@ -65,16 +71,16 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
       {/* Tablet (md), Small Desktop (lg) & Wide Desktop (xl) Navigation */}
       <nav
         aria-label="Primary navigation"
-        className="hidden md:flex items-center justify-end gap-1.5 lg:gap-2.5 xl:gap-5 shrink-0"
+        className="hidden shrink-0 items-center justify-end gap-1.5 md:flex lg:gap-2.5 xl:gap-5"
       >
-        <ul className="flex items-center gap-0.5 lg:gap-1.5 xl:gap-3 text-[8.5px] lg:text-[9.5px] xl:text-[11px] font-semibold uppercase tracking-[0.04em] lg:tracking-[0.07em] xl:tracking-[0.13em] shrink-0">
+        <ul className="flex shrink-0 items-center gap-0.5 text-[8.5px] font-semibold tracking-[0.04em] uppercase lg:gap-1.5 lg:text-[9.5px] lg:tracking-[0.07em] xl:gap-3 xl:text-[11px] xl:tracking-[0.13em]">
           {navLinks.map((item) => (
-            <li key={item.href} className="w-23 lg:w-28 xl:w-36 shrink-0">
+            <li key={item.href} className="w-23 shrink-0 lg:w-28 xl:w-36">
               <a
                 href={item.href}
-                className="group w-full flex items-center justify-start gap-1 lg:gap-1.5 px-1 lg:px-1.5 xl:px-2.5 py-1.5 text-white whitespace-nowrap transition-colors duration-300 ease-out hover:bg-white hover:text-black"
+                className="group flex w-full items-center justify-start gap-1 px-1 py-1.5 whitespace-nowrap text-white transition-colors duration-300 ease-out hover:bg-white hover:text-black lg:gap-1.5 lg:px-1.5 xl:px-2.5"
               >
-                <span className="w-4 lg:w-4.5 shrink-0 text-white/75 tabular-nums transition-colors duration-300 ease-out group-hover:text-black">
+                <span className="w-4 shrink-0 text-white/75 tabular-nums transition-colors duration-300 ease-out group-hover:text-black lg:w-4.5">
                   {item.code}
                 </span>
                 <span className="text-left">{item.label}</span>
@@ -87,7 +93,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
         <div
           role="group"
           aria-label="Language switcher"
-          className="inline-flex items-center justify-center gap-1 lg:gap-1.5 w-19 lg:w-22 xl:w-25 px-1.5 lg:px-2 xl:px-3 py-1.5 lg:py-2 border border-white/35 bg-black text-white text-[8.5px] lg:text-[10px] xl:text-[11px] font-medium tracking-[0.08em] lg:tracking-[0.12em] xl:tracking-[0.14em] uppercase shrink-0"
+          className="inline-flex w-19 shrink-0 items-center justify-center gap-1 border border-white/35 bg-black px-1.5 py-1.5 text-[8.5px] font-medium tracking-[0.08em] text-white uppercase lg:w-22 lg:gap-1.5 lg:px-2 lg:py-2 lg:text-[10px] lg:tracking-[0.12em] xl:w-25 xl:px-3 xl:text-[11px] xl:tracking-[0.14em]"
         >
           <span className="text-white/60" aria-hidden="true">
             [
@@ -96,9 +102,9 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
             type="button"
             onClick={() => lang !== "uk" && toggleLang()}
             aria-pressed={lang === "uk"}
-            className={`transition-colors duration-300 ease-out cursor-pointer ${
+            className={`cursor-pointer transition-colors duration-300 ease-out ${
               lang === "uk"
-                ? "text-white font-bold underline underline-offset-4 decoration-[1.5px]"
+                ? "font-bold text-white underline decoration-[1.5px] underline-offset-4"
                 : "text-white/55 hover:text-white"
             }`}
           >
@@ -111,9 +117,9 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
             type="button"
             onClick={() => lang !== "en" && toggleLang()}
             aria-pressed={lang === "en"}
-            className={`transition-colors duration-300 ease-out cursor-pointer ${
+            className={`cursor-pointer transition-colors duration-300 ease-out ${
               lang === "en"
-                ? "text-white font-bold underline underline-offset-4 decoration-[1.5px]"
+                ? "font-bold text-white underline decoration-[1.5px] underline-offset-4"
                 : "text-white/55 hover:text-white"
             }`}
           >
@@ -128,19 +134,19 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
         <button
           type="button"
           onClick={handleBookingClick}
-          className="w-28 lg:w-40 xl:w-46 px-2 lg:px-3 xl:px-5 py-1.5 lg:py-2 border border-white/40 bg-black text-white text-[8.5px] lg:text-[9.5px] xl:text-[11px] font-semibold uppercase tracking-[0.06em] lg:tracking-widest xl:tracking-[0.14em] text-center whitespace-nowrap transition-colors duration-300 ease-out hover:bg-white hover:text-black hover:border-white cursor-pointer shrink-0"
+          className="w-28 shrink-0 cursor-pointer border border-white/40 bg-black px-2 py-1.5 text-center text-[8.5px] font-semibold tracking-[0.06em] whitespace-nowrap text-white uppercase transition-colors duration-300 ease-out hover:border-white hover:bg-white hover:text-black lg:w-40 lg:px-3 lg:py-2 lg:text-[9.5px] lg:tracking-widest xl:w-46 xl:px-5 xl:text-[11px] xl:tracking-[0.14em]"
         >
           {lang === "uk" ? "КОНСУЛЬТАЦІЯ" : "BOOK CONSULTATION"}
         </button>
       </nav>
 
       {/* Mobile Controls (< md): Equal-sized Lang Toggle & Burger Button (w-9 h-9) */}
-      <div className="flex md:hidden items-center gap-2 shrink-0">
+      <div className="flex shrink-0 items-center gap-2 md:hidden">
         <button
           type="button"
           onClick={toggleLang}
           aria-label="Toggle language"
-          className="inline-flex items-center justify-center w-9 h-9 border border-white/35 bg-black text-white text-[11px] font-semibold uppercase leading-none transition-colors duration-300 ease-out hover:bg-white hover:text-black cursor-pointer"
+          className="inline-flex h-9 w-9 cursor-pointer items-center justify-center border border-white/35 bg-black text-[11px] leading-none font-semibold text-white uppercase transition-colors duration-300 ease-out hover:bg-white hover:text-black"
         >
           {lang === "uk" ? "EN" : "UA"}
         </button>
@@ -150,9 +156,9 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
           onClick={() => setMobileMenuOpen(true)}
           aria-label={t.nav.menuOpen}
           aria-expanded={mobileMenuOpen}
-          className="inline-flex items-center justify-center w-9 h-9 border border-white/35 bg-black text-white transition-colors duration-300 ease-out hover:bg-white hover:text-black cursor-pointer"
+          className="inline-flex h-9 w-9 cursor-pointer items-center justify-center border border-white/35 bg-black text-white transition-colors duration-300 ease-out hover:bg-white hover:text-black"
         >
-          <Menu className="w-4 h-4 stroke-[1.75]" />
+          <Menu className="h-4 w-4 stroke-[1.75]" />
         </button>
       </div>
 
@@ -162,15 +168,15 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
         aria-modal="true"
         aria-hidden={!mobileMenuOpen}
         aria-label="Mobile navigation"
-        className={`fixed inset-0 z-50 flex flex-col justify-between bg-black text-white p-6 md:hidden transition-all duration-300 ease-out will-change-transform ${
+        className={`fixed inset-0 z-50 flex flex-col justify-between bg-black p-6 text-white transition-all duration-300 ease-out will-change-transform md:hidden ${
           mobileMenuOpen
-            ? "translate-x-0 opacity-100 pointer-events-auto"
-            : "translate-x-full opacity-0 pointer-events-none"
+            ? "pointer-events-auto translate-x-0 opacity-100"
+            : "pointer-events-none translate-x-full opacity-0"
         }`}
       >
         <div className="flex items-center justify-between border-b border-white/20 pb-4">
           <div className="flex flex-col">
-            <span className="font-display text-base font-extrabold leading-none tracking-[0.22em] uppercase">
+            <span className="font-display text-base leading-none font-extrabold tracking-[0.22em] uppercase">
               MONO
             </span>
             <span className="mt-1 text-[8px] tracking-[0.24em] text-white/75 uppercase">
@@ -184,13 +190,13 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
             type="button"
             onClick={handleCloseMenu}
             aria-label={t.nav.menuClose}
-            className="inline-flex items-center justify-center w-9 h-9 border border-white/35 bg-black text-white transition-colors duration-300 ease-out hover:bg-white hover:text-black cursor-pointer"
+            className="inline-flex h-9 w-9 cursor-pointer items-center justify-center border border-white/35 bg-black text-white transition-colors duration-300 ease-out hover:bg-white hover:text-black"
           >
-            <X className="w-4 h-4 stroke-[1.75]" />
+            <X className="h-4 w-4 stroke-[1.75]" />
           </button>
         </div>
 
-        <ul className="flex flex-col gap-5 my-auto">
+        <ul className="my-auto flex flex-col gap-5">
           {navLinks.map((item) => (
             <li
               key={item.href}
@@ -199,10 +205,10 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
               <a
                 href={item.href}
                 onClick={handleCloseMenu}
-                className="flex items-baseline justify-between font-display text-xl font-bold uppercase tracking-tight opacity-85 hover:opacity-100 transition-opacity duration-300 ease-out"
+                className="flex items-baseline justify-between font-display text-xl font-bold tracking-tight uppercase opacity-85 transition-opacity duration-300 ease-out hover:opacity-100"
               >
                 <span>{item.label}</span>
-                <span className="text-xs tabular-nums text-white/60">
+                <span className="text-xs text-white/60 tabular-nums">
                   {item.code}
                 </span>
               </a>
@@ -210,19 +216,19 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
           ))}
         </ul>
 
-        <div className="flex flex-col gap-4 pt-4 border-t border-white/20">
+        <div className="flex flex-col gap-4 border-t border-white/20 pt-4">
           <div className="flex items-center justify-between text-xs uppercase">
             <span className="text-white/70">
               {lang === "uk" ? "МОВА / LANGUAGE" : "LANGUAGE / МОВА"}
             </span>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 border border-white/35">
+            <div className="inline-flex items-center gap-2 border border-white/35 px-3 py-1.5">
               <span>[</span>
               <button
                 type="button"
                 onClick={() => lang !== "uk" && toggleLang()}
                 className={`cursor-pointer ${
                   lang === "uk"
-                    ? "text-white font-bold underline underline-offset-4"
+                    ? "font-bold text-white underline underline-offset-4"
                     : "text-white/55"
                 }`}
               >
@@ -234,7 +240,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
                 onClick={() => lang !== "en" && toggleLang()}
                 className={`cursor-pointer ${
                   lang === "en"
-                    ? "text-white font-bold underline underline-offset-4"
+                    ? "font-bold text-white underline underline-offset-4"
                     : "text-white/55"
                 }`}
               >
@@ -247,7 +253,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
           <button
             type="button"
             onClick={handleBookingClick}
-            className="w-full py-3.5 border border-white/40 bg-black text-white text-xs font-bold uppercase tracking-[0.16em] transition-colors duration-300 ease-out hover:bg-white hover:text-black cursor-pointer"
+            className="w-full cursor-pointer border border-white/40 bg-black py-3.5 text-xs font-bold tracking-[0.16em] text-white uppercase transition-colors duration-300 ease-out hover:bg-white hover:text-black"
           >
             {lang === "uk" ? "ЗАМОВИТИ КОНСУЛЬТАЦІЮ" : "BOOK CONSULTATION"}
           </button>

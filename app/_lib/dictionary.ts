@@ -57,6 +57,15 @@ export interface TestimonialItem {
   trip: string;
 }
 
+export interface BookingSummaryData {
+  mode?: "builder" | "destination" | "consultation";
+  destination?: string | DestinationItem;
+  days?: number;
+  guests?: number;
+  addons?: string[];
+  estimatedPrice?: number | string;
+}
+
 export interface Dictionary {
   nav: {
     destinations: string;
@@ -132,14 +141,34 @@ export interface Dictionary {
     source: string;
     items: TestimonialItem[];
   };
-  modal: {
-    heading: string;
-    nameLabel: string;
-    contactLabel: string;
-    notesLabel: string;
-    submitLabel: string;
-    submittingLabel: string;
+  booking: {
+    eyebrow: string;
+    title: string;
+    subtitle: string;
     closeLabel: string;
+    summaryTitle: string;
+    modeConsultation: string;
+    destinationLabel: string;
+    durationLabel: string;
+    daysUnit: string;
+    guestsLabel: string;
+    guestsUnit: string;
+    addonsLabel: string;
+    noAddonsLabel: string;
+    estimatedPriceLabel: string;
+    nameLabel: string;
+    namePlaceholder: string;
+    contactLabel: string;
+    contactPlaceholder: string;
+    commentLabel: string;
+    commentPlaceholder: string;
+    submitCta: string;
+    nameError: string;
+    contactError: string;
+    successTitle: string;
+    successDescription: string;
+    newRequestCta: string;
+    doneCta: string;
   };
   footer: {
     brandName: string;
@@ -469,14 +498,36 @@ export const dictionary: Record<Language, Dictionary> = {
         },
       ],
     },
-    modal: {
-      heading: "Expedition Inquiry",
-      nameLabel: "Full Name",
-      contactLabel: "Email or Telegram",
-      notesLabel: "Architectural Interests & Dates",
-      submitLabel: "Send Inquiry",
-      submittingLabel: "Sending...",
-      closeLabel: "Close",
+    booking: {
+      eyebrow: "[ DISPATCH REQUEST ]",
+      title: "EXPEDITION BRIEFING",
+      subtitle:
+        "Submit your coordinates and our concierge team will prepare a tailored route dossier.",
+      closeLabel: "CLOSE MODAL",
+      summaryTitle: "CONFIGURATION SUMMARY",
+      modeConsultation: "PRIVATE CONCIERGE CONSULTATION",
+      destinationLabel: "DESTINATION",
+      durationLabel: "DURATION",
+      daysUnit: "DAYS",
+      guestsLabel: "TRAVELERS",
+      guestsUnit: "GUESTS",
+      addonsLabel: "BESPOKE ADD-ONS",
+      noAddonsLabel: "BASE ROUTE ONLY",
+      estimatedPriceLabel: "ESTIMATED ESTIMATE",
+      nameLabel: "FULL NAME",
+      namePlaceholder: "ENTER YOUR NAME...",
+      contactLabel: "EMAIL OR TELEGRAM",
+      contactPlaceholder: "NAME@DOMAIN.COM OR @USERNAME...",
+      commentLabel: "DATES / NOTES / COMMENT",
+      commentPlaceholder: "PREFERRED WINDOW, FLIGHT DETAILS OR REQUESTS...",
+      submitCta: "SEND REQUEST →",
+      nameError: "PLEASE ENTER YOUR NAME.",
+      contactError: "ENTER A VALID EMAIL OR @TELEGRAM HANDLE.",
+      successTitle: "BRIEFING REGISTERED",
+      successDescription:
+        "Your expedition specification has been logged. A senior route architect will reach out shortly.",
+      newRequestCta: "EDIT DETAILS",
+      doneCta: "CLOSE",
     },
     footer: {
       brandName: "MONO TRAVEL",
@@ -808,14 +859,36 @@ export const dictionary: Record<Language, Dictionary> = {
         },
       ],
     },
-    modal: {
-      heading: "Заявка на експедицію",
-      nameLabel: "Ім'я та прізвище",
-      contactLabel: "Email або Telegram",
-      notesLabel: "Побажання щодо архітектури та дат",
-      submitLabel: "Надіслати заявку",
-      submittingLabel: "Надсилання...",
-      closeLabel: "Закрити",
+    booking: {
+      eyebrow: "[ ЗАПИТ НА ЕКСПЕДИЦІЮ ]",
+      title: "БРИФІНГ ТА БРОНЮВАННЯ",
+      subtitle:
+        "Залиште контакти — наш консьєрж підготує індивідуальний маршрут і розрахунок.",
+      closeLabel: "ЗАКРИТИ ВІКНО",
+      summaryTitle: "ПАРАМЕТРИ КОНФІГУРАЦІЇ",
+      modeConsultation: "ІНДИВІДУАЛЬНА КОНСУЛЬТАЦІЯ",
+      destinationLabel: "НАПРЯМОК",
+      durationLabel: "ТРИВАЛІСТЬ",
+      daysUnit: "ДНІВ",
+      guestsLabel: "СКЛАД ГРУПИ",
+      guestsUnit: "ГОСТЕЙ",
+      addonsLabel: "ДОДАТКОВІ ОПЦІЇ",
+      noAddonsLabel: "БАЗОВИЙ МАРШРУТ",
+      estimatedPriceLabel: "ОРІЄНТОВНИЙ БЮДЖЕТ",
+      nameLabel: "ІМ'Я",
+      namePlaceholder: "ВВЕДІТЬ ВАШЕ ІМ'Я...",
+      contactLabel: "EMAIL АБО TELEGRAM",
+      contactPlaceholder: "NAME@DOMAIN.COM АБО @NICKNAME...",
+      commentLabel: "КОМЕНТАР / ДАТИ",
+      commentPlaceholder: "БАЖАНІ ДАТИ, ПОБАЖАННЯ ЩОДО ЛОГІСТИКИ...",
+      submitCta: "НАДІСЛАТИ ЗАПИТ →",
+      nameError: "ВКАЖІТЬ ВАШЕ ІМ'Я.",
+      contactError: "ВВЕДІТЬ КОРЕКТНИЙ EMAIL АБО @TELEGRAM.",
+      successTitle: "ЗАПИТ ЗАРЕЄСТРОВАНО",
+      successDescription:
+        "Конфігурацію передано архітектору подорожей. Ми зв'яжемося з вами найближчим часом.",
+      newRequestCta: "ЗМІНИТИ ДАНІ",
+      doneCta: "ЗАКРИТИ",
     },
     footer: {
       brandName: "MONO TRAVEL",
