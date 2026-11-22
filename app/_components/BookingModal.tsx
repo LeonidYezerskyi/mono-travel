@@ -1,9 +1,12 @@
 "use client";
 
-import type { SyntheticEvent } from "react";
-import { useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useLanguage } from "../_context/LanguageContext";
+import {
+  submitExpeditionRequest,
+  type ExpeditionActionState,
+} from "../_lib/actions";
 import type { BookingSummaryData } from "../_lib/dictionary";
 
 export type { BookingSummaryData };
@@ -14,6 +17,12 @@ export interface BookingModalProps {
   summaryData?: BookingSummaryData | null;
 }
 
+const INITIAL_ACTION_STATE: ExpeditionActionState = {
+  status: "idle",
+  nameError: false,
+  contactError: false,
+};
+
 function formatPriceDisplay(value?: number | string): string | null {
   if (value === undefined || value === null || value === "") return null;
   if (typeof value === "number") {
@@ -22,11 +31,153 @@ function formatPriceDisplay(value?: number | string): string | null {
   return value;
 }
 
-function isValidEmailOrTelegram(raw: string): boolean {
-  const value = raw.trim();
-  const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  const isTelegram = /^@?[a-zA-Z0-9_]{5,32}$/.test(value);
-  return isEmail || isTelegram;
+interface BookingFormProps {
+  formKey: number;
+  lang: "uk" | "en";
+  t: ReturnType<typeof useLanguage>["t"];
+  summaryData?: BookingSummaryData | null;
+  fullName: string;
+  contact: string;
+  comment: string;
+  onFullNameChange: (value: string) => void;
+  onContactChange: (value: string) => void;
+  onCommentChange: (value: string) => void;
+  onSuccess: (requestId?: string) => void;
+}
+
+function BookingForm({
+  formKey,
+  lang,
+  t,
+  summaryData,
+  fullName,
+  contact,
+  comment,
+  onFullNameChange,
+  onContactChange,
+  onCommentChange,
+  onSuccess,
+}: BookingFormProps) {
+  const [state, formAction, isPending] = useActionState(
+    submitExpeditionRequest,
+    INITIAL_ACTION_STATE,
+  );
+
+  useEffect(() => {
+    if (state.status === "success") {
+      onSuccess(state.requestId);
+    }
+  }, [state.status, state.requestId, onSuccess]);
+
+  return (
+    <form
+      key={formKey}
+      action={formAction}
+      noValidate
+      className="mt-4 space-y-3 lg:mt-3 lg:space-y-2"
+    >
+      <input type="hidden" name="locale" value={lang} />
+      <input
+        type="hidden"
+        name="summaryJson"
+        value={summaryData ? JSON.stringify(summaryData) : ""}
+      />
+
+      <div>
+        <label
+          htmlFor="booking-name"
+          className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
+        >
+          {t.booking.nameLabel} *
+        </label>
+        <input
+          id="booking-name"
+          name="fullName"
+          type="text"
+          value={fullName}
+          onChange={(e) => onFullNameChange(e.target.value)}
+          placeholder={t.booking.namePlaceholder}
+          className="mt-1.5 w-full border-b border-black/35 bg-transparent py-2.5 font-mono text-xs tracking-wider text-black placeholder:text-black/40 focus:border-b-2 focus:border-black focus:outline-none sm:text-sm"
+        />
+        <p
+          role="alert"
+          className="mt-1 min-h-4 font-mono text-[10px] font-semibold tracking-wider text-red-700/80 uppercase"
+        >
+          {state.nameError ? t.booking.nameError : ""}
+        </p>
+      </div>
+
+      <div>
+        <label
+          htmlFor="booking-contact"
+          className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
+        >
+          {t.booking.contactLabel} *
+        </label>
+        <input
+          id="booking-contact"
+          name="contact"
+          type="text"
+          value={contact}
+          onChange={(e) => onContactChange(e.target.value)}
+          placeholder={t.booking.contactPlaceholder}
+          className="mt-1.5 w-full border-b border-black/35 bg-transparent py-2.5 font-mono text-xs tracking-wider text-black placeholder:text-black/40 focus:border-b-2 focus:border-black focus:outline-none sm:text-sm"
+        />
+        <p
+          role="alert"
+          className="mt-1 min-h-4 font-mono text-[10px] font-semibold tracking-wider text-red-700/80 uppercase"
+        >
+          {state.contactError ? t.booking.contactError : ""}
+        </p>
+      </div>
+
+      <div>
+        <label
+          htmlFor="booking-comment"
+          className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
+        >
+          {t.booking.commentLabel}
+        </label>
+        <textarea
+          id="booking-comment"
+          name="comment"
+          rows={2}
+          value={comment}
+          onChange={(e) => onCommentChange(e.target.value)}
+          placeholder={t.booking.commentPlaceholder}
+          className="mt-1.5 w-full resize-none border-b border-black/35 bg-transparent py-2.5 font-mono text-xs leading-normal tracking-wider text-black placeholder:text-black/40 focus:border-b-2 focus:border-black focus:outline-none sm:text-sm"
+        />
+      </div>
+
+      <p
+        role="status"
+        aria-live="polite"
+        className="min-h-4 font-mono text-[10px] tracking-widest text-black/75 uppercase"
+      >
+        {isPending
+          ? lang === "en"
+            ? "[ DISPATCHING REQUEST... ]"
+            : "[ ВІДПРАВКА ЗАПИТУ... ]"
+          : state.status === "error" && state.message
+            ? state.message
+            : ""}
+      </p>
+
+      <div className="pt-1">
+        <button
+          type="submit"
+          disabled={isPending}
+          className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center border border-black bg-black px-6 py-2.5 font-mono text-[11px] font-semibold tracking-[0.16em] text-white uppercase transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          {isPending
+            ? lang === "en"
+              ? "SENDING..."
+              : "НАДСИЛАЄМО..."
+            : t.booking.submitCta}
+        </button>
+      </div>
+    </form>
+  );
 }
 
 export function BookingModal({
@@ -34,14 +185,15 @@ export function BookingModal({
   onClose,
   summaryData,
 }: BookingModalProps) {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
 
   const [fullName, setFullName] = useState("");
   const [contact, setContact] = useState("");
   const [comment, setComment] = useState("");
-  const [nameError, setNameError] = useState(false);
-  const [contactError, setContactError] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submittedRequestId, setSubmittedRequestId] = useState<string | null>(
+    null,
+  );
+  const [formKey, setFormKey] = useState(0);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -76,36 +228,28 @@ export function BookingModal({
 
   if (!isOpen) return null;
 
+  const destinationLabelText =
+    typeof summaryData?.destination === "string"
+      ? summaryData.destination
+      : (summaryData?.destination?.title ?? "");
+
+  const isSuccessVisible = submittedRequestId !== null;
   const formattedPrice = formatPriceDisplay(summaryData?.estimatedPrice);
   const hasStructuredSummary = Boolean(
-    summaryData?.destination ||
+    destinationLabelText ||
     summaryData?.days ||
     summaryData?.guests ||
     (summaryData?.addons && summaryData.addons.length > 0) ||
     formattedPrice,
   );
 
-  const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    const trimmedName = fullName.trim();
-    const trimmedContact = contact.trim();
-
-    const isNameValid = trimmedName.length >= 2;
-    const isContactValid = isValidEmailOrTelegram(trimmedContact);
-
-    setNameError(!isNameValid);
-    setContactError(!isContactValid);
-
-    if (!isNameValid || !isContactValid) {
-      return;
-    }
-
-    setSubmitted(true);
+  const handleFormSuccess = (requestId?: string) => {
+    setSubmittedRequestId(requestId ?? "CONFIRMED");
   };
 
-  const handleResetSuccess = () => {
-    setSubmitted(false);
+  const handleEditDetails = () => {
+    setSubmittedRequestId(null);
+    setFormKey((prev) => prev + 1);
   };
 
   return (
@@ -144,10 +288,14 @@ export function BookingModal({
         </div>
 
         <div className="min-h-0 flex-none px-4 py-4 sm:px-6 md:px-8 md:py-5 lg:py-3">
-          {submitted ? (
+          {isSuccessVisible ? (
             <div className="border border-black bg-black p-6 text-white sm:p-8">
               <p className="font-mono text-[10px] tracking-[0.14em] text-white/65 uppercase">
-                [ STATUS: CONFIRMED ]
+                [ STATUS: CONFIRMED
+                {submittedRequestId && submittedRequestId !== "CONFIRMED"
+                  ? ` · ${submittedRequestId}`
+                  : ""}
+                ]
               </p>
               <h3 className="mt-2 font-display text-xl font-bold tracking-wide uppercase sm:text-2xl">
                 {t.booking.successTitle}
@@ -159,7 +307,7 @@ export function BookingModal({
               <div className="mt-6 flex flex-col gap-3 sm:flex-row">
                 <button
                   type="button"
-                  onClick={handleResetSuccess}
+                  onClick={handleEditDetails}
                   className="inline-flex min-h-11 cursor-pointer items-center justify-center border border-white bg-black px-5 py-2.5 font-mono text-[11px] tracking-widest text-white uppercase transition-colors hover:bg-white hover:text-black"
                 >
                   {t.booking.newRequestCta}
@@ -186,15 +334,13 @@ export function BookingModal({
 
                 {hasStructuredSummary ? (
                   <div className="mt-3 grid grid-cols-1 gap-3 font-mono text-[11px] uppercase sm:grid-cols-2">
-                    {summaryData?.destination && (
+                    {destinationLabelText && (
                       <div className="border-b border-black/15 pb-2 sm:col-span-2">
                         <span className="block text-[10px] tracking-[0.12em] text-black/60">
                           {t.booking.destinationLabel}
                         </span>
                         <span className="mt-0.5 block font-semibold text-black">
-                          {typeof summaryData.destination === "string"
-                            ? summaryData.destination
-                            : summaryData.destination.title}
+                          {destinationLabelText}
                         </span>
                       </div>
                     )}
@@ -250,89 +396,19 @@ export function BookingModal({
                 )}
               </div>
 
-              <form
-                onSubmit={handleSubmit}
-                noValidate
-                className="mt-4 space-y-3 lg:mt-3 lg:space-y-2"
-              >
-                <div>
-                  <label
-                    htmlFor="booking-name"
-                    className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
-                  >
-                    {t.booking.nameLabel} *
-                  </label>
-                  <input
-                    id="booking-name"
-                    type="text"
-                    value={fullName}
-                    onChange={(e) => {
-                      setFullName(e.target.value);
-                      if (nameError) setNameError(false);
-                    }}
-                    placeholder={t.booking.namePlaceholder}
-                    className="mt-1.5 w-full border-b border-black/35 bg-transparent py-2.5 font-mono text-xs tracking-wider text-black placeholder:text-black/40 focus:border-b focus:border-black focus:outline-none sm:text-sm"
-                  />
-                  <p
-                    role="alert"
-                    className="mt-1 min-h-4 font-mono font-semibold text-[10px] tracking-wider text-red-700/80 uppercase"
-                  >
-                    {nameError ? t.booking.nameError : ""}
-                  </p>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="booking-contact"
-                    className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
-                  >
-                    {t.booking.contactLabel} *
-                  </label>
-                  <input
-                    id="booking-contact"
-                    type="text"
-                    value={contact}
-                    onChange={(e) => {
-                      setContact(e.target.value);
-                      if (contactError) setContactError(false);
-                    }}
-                    placeholder={t.booking.contactPlaceholder}
-                    className="mt-1.5 w-full border-b border-black/35 bg-transparent py-2.5 font-mono text-xs tracking-wider text-black placeholder:text-black/40 focus:border-b focus:border-black focus:outline-none sm:text-sm"
-                  />
-                  <p
-                    role="alert"
-                    className="mt-1 min-h-4 font-mono text-[10px] font-semibold tracking-wider text-red-700/80 uppercase"
-                  >
-                    {contactError ? t.booking.contactError : ""}
-                  </p>
-                </div>
-
-                <div>
-                  <label
-                    htmlFor="booking-comment"
-                    className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
-                  >
-                    {t.booking.commentLabel}
-                  </label>
-                  <textarea
-                    id="booking-comment"
-                    rows={2}
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
-                    placeholder={t.booking.commentPlaceholder}
-                    className="mt-1.5 w-full resize-none border-b border-black/35 bg-transparent py-2.5 font-mono text-xs leading-normal tracking-wider text-black placeholder:text-black/40 focus:border-b focus:border-black focus:outline-none sm:text-sm"
-                  />
-                </div>
-
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center border border-black bg-black px-6 py-2.5 font-mono text-[11px] font-semibold tracking-[0.16em] text-white uppercase transition-colors hover:bg-white hover:text-black"
-                  >
-                    {t.booking.submitCta}
-                  </button>
-                </div>
-              </form>
+              <BookingForm
+                formKey={formKey}
+                lang={lang}
+                t={t}
+                summaryData={summaryData}
+                fullName={fullName}
+                contact={contact}
+                comment={comment}
+                onFullNameChange={setFullName}
+                onContactChange={setContact}
+                onCommentChange={setComment}
+                onSuccess={handleFormSuccess}
+              />
             </>
           )}
         </div>
