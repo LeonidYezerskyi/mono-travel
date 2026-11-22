@@ -142,8 +142,27 @@ export interface Dictionary {
     closeLabel: string;
   };
   footer: {
-    tagline: string;
-    rights: string;
+    brandName: string;
+    description: string;
+    address: string;
+    email: string;
+    copiedLabel: string;
+    navTitle: string;
+    navLinks: {
+      label: string;
+      href: string;
+    }[];
+    clubTitle: string;
+    clubSubtitle: string;
+    emailPlaceholder: string;
+    subscribeCta: string;
+    subscribedMessage: string;
+    invalidEmailMessage: string;
+    copyright: string;
+    legalLinks: {
+      label: string;
+      href: string;
+    }[];
   };
 }
 
@@ -460,8 +479,32 @@ export const dictionary: Record<Language, Dictionary> = {
       closeLabel: "Close",
     },
     footer: {
-      tagline: "Monochrome spatial travel dispatches.",
-      rights: "MONO TRAVEL. All rights reserved.",
+      brandName: "MONO TRAVEL",
+      description:
+        "Boutique private expedition agency. Crafting bespoke routes of the highest complexity and aesthetic discipline.",
+      address: "KYIV, 12 ROITBURDA ST.",
+      email: "CONCIERGE@MONOTRAVEL.UA",
+      copiedLabel: "COPIED",
+      navTitle: "[ NAVIGATION ]",
+      navLinks: [
+        { label: "PHILOSOPHY", href: "#philosophy" },
+        { label: "DESTINATIONS 2026", href: "#destinations" },
+        { label: "ITINERARIES", href: "#itinerary" },
+        { label: "BUILDER", href: "#builder" },
+      ],
+      clubTitle: "[ PRIVATE CLUB ]",
+      clubSubtitle: "Receive private expedition dispatches 4 times a year.",
+      emailPlaceholder: "YOUR EMAIL...",
+      subscribeCta: "SUBSCRIBE →",
+      subscribedMessage: "REQUEST REGISTERED IN PRIVATE DISPATCH LIST.",
+      invalidEmailMessage: "ENTER A VALID EMAIL ADDRESS.",
+      copyright:
+        "© 2026 MONO TRAVEL. ALL RIGHTS RESERVED. STRICT MONOCHROME EDITION.",
+      legalLinks: [
+        { label: "INSTAGRAM", href: "#reviews" },
+        { label: "TELEGRAM PRIVÉ", href: "#builder" },
+        { label: "LEGAL TERMS", href: "#philosophy" },
+      ],
     },
   },
   uk: {
@@ -775,8 +818,31 @@ export const dictionary: Record<Language, Dictionary> = {
       closeLabel: "Закрити",
     },
     footer: {
-      tagline: "Монохромні експедиції у простір і форму.",
-      rights: "MONO TRAVEL. Усі права захищено.",
+      brandName: "MONO TRAVEL",
+      description:
+        "Бутикова агенція приватних експедицій. Створення персональних маршрутів найвищої категорії складності та естетики.",
+      address: "КИЇВ, ВУЛ. РОЙТБУРДА, 12",
+      email: "CONCIERGE@MONOTRAVEL.UA",
+      copiedLabel: "СКОПІЙОВАНО",
+      navTitle: "[ НАВІГАЦІЯ ]",
+      navLinks: [
+        { label: "ФІЛОСОФІЯ", href: "#philosophy" },
+        { label: "НАПРЯМКИ 2026", href: "#destinations" },
+        { label: "МАРШРУТИ", href: "#itinerary" },
+        { label: "КОНСТРУКТОР", href: "#builder" },
+      ],
+      clubTitle: "[ ЗАКРИТИЙ КЛУБ ]",
+      clubSubtitle: "Отримуйте закриті анонси експедицій 4 рази на рік.",
+      emailPlaceholder: "ВАШ EMAIL...",
+      subscribeCta: "ПІДПИСАТИСЯ →",
+      subscribedMessage: "EMAIL ДОДАНО ДО ЗАКРИТОГО СПИСКУ АНОНСІВ.",
+      invalidEmailMessage: "ВВЕДІТЬ КОРЕКТНУ EMAIL-АДРЕСУ.",
+      copyright: "© 2026 MONO TRAVEL. ВСІ ПРАВА ЗАХИЩЕНІ. МОНОХРОМНЕ ВИДАННЯ.",
+      legalLinks: [
+        { label: "INSTAGRAM", href: "#reviews" },
+        { label: "TELEGRAM PRIVÉ", href: "#builder" },
+        { label: "ПРАВОВІ УМОВИ", href: "#philosophy" },
+      ],
     },
   },
 };
