@@ -4,6 +4,7 @@ import { Header } from "./_components/Header";
 import { HeroSection } from "./_components/HeroSection";
 import { ItinerarySection } from "./_components/ItinerarySection";
 import { ManifestoSection } from "./_components/ManifestoSection";
+import { TestimonialsSection } from "./_components/TestimonialsSection";
 import { WorldClockTicker } from "./_components/WorldClockTicker";
 
 export default function HomePage() {
@@ -17,6 +18,7 @@ export default function HomePage() {
         <DestinationShowcase />
         <ItinerarySection />
         <ExpeditionBuilder />
+        <TestimonialsSection />
       </main>
     </div>
   );

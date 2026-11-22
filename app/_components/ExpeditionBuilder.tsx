@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { useState } from "react";
 import { useLanguage } from "../_context/LanguageContext";
 import type {
@@ -36,6 +37,17 @@ interface ExpeditionBuilderProps {
   onOpenModal?: (payload: ExpeditionConfigPayload) => void;
 }
 
+function getSliderStyle(
+  value: number,
+  min: number,
+  max: number,
+): CSSProperties {
+  const progress = ((value - min) / (max - min)) * 100;
+  return {
+    "--slider-progress": `${progress}%`,
+  } as CSSProperties;
+}
+
 export function ExpeditionBuilder({
   selectedDestinationId,
   onSelectDestinationId,
@@ -61,23 +73,12 @@ export function ExpeditionBuilder({
     onSelectDestinationId?.(id);
   };
 
-  const handleDaysChange = (delta: number) => {
-    setDays((prev) => Math.min(MAX_DAYS, Math.max(MIN_DAYS, prev + delta)));
-  };
-
-  const handleGuestsChange = (delta: number) => {
-    setGuests((prev) =>
-      Math.min(MAX_GUESTS, Math.max(MIN_GUESTS, prev + delta)),
-    );
-  };
-
   const toggleExtra = (id: ExpeditionExtraId) => {
     setExtras((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id],
     );
   };
 
-  // Derived state: розрахунок через звичайні змінні без зайвих стейтів
   const baseRate = BASE_DAILY_RATE_BY_DESTINATION[activeDestId] ?? 3400;
   const baseTripCost = baseRate * days;
   const extraGuestsCost = Math.max(0, guests - 1) * EXTRA_GUEST_RATE * days;
@@ -107,7 +108,6 @@ export function ExpeditionBuilder({
       className="grid-bg border-b border-white py-16 text-white md:py-24 xl:py-32"
     >
       <div className="mx-auto w-full max-w-360 px-4 md:px-8 xl:px-12">
-        {/* Шапка секції */}
         <div className="flex flex-col justify-between gap-2 border-b border-white pb-5 sm:flex-row sm:items-end">
           <span className="font-mono text-[11px] leading-[1.2] tracking-[0.12em] text-white uppercase md:text-xs">
             {t.builder.eyebrow}
@@ -117,231 +117,260 @@ export function ExpeditionBuilder({
           </span>
         </div>
 
-        {/* Основна 3-колонкова таблиця з 1px рамками */}
-        <div className="mt-10 border border-white bg-black md:mt-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-            {/* Колонка 1: Напрямок */}
-            <div className="flex min-h-[260px] flex-col justify-between border-b border-white p-5 sm:p-6 md:min-h-[300px] md:border-r lg:border-b-0 lg:p-7">
-              <div>
-                <p className="border-b border-white/25 pb-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
-                  {t.builder.colDestination}
-                </p>
+        <div className="mt-10 border border-white bg-black p-4 sm:p-6 md:mt-14 lg:p-7">
+          <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-12 lg:gap-7">
+            <div className="flex flex-col border border-white bg-black lg:col-span-7">
+              <div className="grid flex-1 grid-cols-1 md:grid-cols-2">
+                <div className="flex min-h-72.5 flex-col justify-between border-b border-white p-5 sm:p-6 md:border-r">
+                  <div>
+                    <p className="border-b border-white/25 pb-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
+                      {t.builder.colDestination}
+                    </p>
 
-                <div className="mt-4 flex flex-col gap-2.5">
-                  {destinations.map((dest) => {
-                    const isSelected = dest.id === activeDestId;
+                    <div className="mt-4 flex flex-col gap-2.5">
+                      {destinations.map((dest) => {
+                        const isSelected = dest.id === activeDestId;
 
-                    return (
-                      <button
-                        key={dest.id}
-                        type="button"
-                        aria-pressed={isSelected}
-                        onClick={() => handleDestChange(dest.id)}
-                        className={`flex min-h-[46px] w-full items-center justify-between border border-white px-4 py-2.5 text-left font-mono text-[11px] tracking-[0.1em] uppercase transition-colors duration-200 ${
-                          isSelected
-                            ? "bg-white font-bold text-black"
-                            : "bg-black text-white hover:bg-white/10"
-                        }`}
-                      >
-                        <span className="truncate">
-                          {dest.code} / {dest.tabTitle}
-                        </span>
-                        <span
-                          aria-hidden="true"
-                          className="ml-2 shrink-0 tabular-nums"
-                        >
-                          {isSelected ? "■" : "□"}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-5 flex items-center justify-between border-t border-white/20 pt-3 font-mono text-[10px] tracking-[0.1em] text-white/65 uppercase">
-                <span>{activeDestination?.country}</span>
-                <span className="tabular-nums">
-                  ${baseRate.toLocaleString("en-US")} / DAY
-                </span>
-              </div>
-            </div>
-
-            {/* Колонка 2: Тривалість (3–14) та Гості (1–6) */}
-            <div className="flex min-h-[260px] flex-col justify-between border-b border-white p-5 sm:p-6 md:min-h-[300px] lg:border-r lg:border-b-0 lg:p-7">
-              <div>
-                <p className="border-b border-white/25 pb-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
-                  {t.builder.colParameters}
-                </p>
-
-                {/* Блок кількості днів */}
-                <div className="mt-5 border border-white p-4">
-                  <div className="flex items-center justify-between gap-2 font-mono text-[10px] tracking-[0.1em] text-white/75 uppercase">
-                    <span>{t.builder.daysLabel}</span>
-                    <span className="tabular-nums">
-                      {MIN_DAYS}–{MAX_DAYS}
-                    </span>
-                  </div>
-
-                  <div className="mt-3 flex items-center justify-between gap-3">
-                    <button
-                      type="button"
-                      aria-label="Decrease days"
-                      disabled={days <= MIN_DAYS}
-                      onClick={() => handleDaysChange(-1)}
-                      className="flex h-10 w-10 shrink-0 items-center justify-center border border-white bg-black font-mono text-base text-white transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-black disabled:hover:text-white"
-                    >
-                      −
-                    </button>
-
-                    <div className="min-w-[104px] text-center font-display text-lg font-bold tracking-[0.04em] uppercase tabular-nums sm:text-xl">
-                      {formattedDays}{" "}
-                      <span className="font-mono text-[10px] font-normal tracking-[0.12em] text-white/75">
-                        {t.builder.dayUnit}
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      aria-label="Increase days"
-                      disabled={days >= MAX_DAYS}
-                      onClick={() => handleDaysChange(1)}
-                      className="flex h-10 w-10 shrink-0 items-center justify-center border border-white bg-black font-mono text-base text-white transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-black disabled:hover:text-white"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-
-                {/* Блок кількості гостей */}
-                <div className="mt-4 border border-white p-4">
-                  <div className="flex items-center justify-between gap-2 font-mono text-[10px] tracking-[0.1em] text-white/75 uppercase">
-                    <span>{t.builder.guestsLabel}</span>
-                    <span className="tabular-nums">
-                      {MIN_GUESTS}–{MAX_GUESTS}
-                    </span>
-                  </div>
-
-                  <div className="mt-3 flex items-center justify-between gap-3">
-                    <button
-                      type="button"
-                      aria-label="Decrease guests"
-                      disabled={guests <= MIN_GUESTS}
-                      onClick={() => handleGuestsChange(-1)}
-                      className="flex h-10 w-10 shrink-0 items-center justify-center border border-white bg-black font-mono text-base text-white transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-black disabled:hover:text-white"
-                    >
-                      −
-                    </button>
-
-                    <div className="min-w-[104px] text-center font-display text-lg font-bold tracking-[0.04em] uppercase tabular-nums sm:text-xl">
-                      {formattedGuests}{" "}
-                      <span className="font-mono text-[10px] font-normal tracking-[0.12em] text-white/75">
-                        {t.builder.guestUnit}
-                      </span>
-                    </div>
-
-                    <button
-                      type="button"
-                      aria-label="Increase guests"
-                      disabled={guests >= MAX_GUESTS}
-                      onClick={() => handleGuestsChange(1)}
-                      className="flex h-10 w-10 shrink-0 items-center justify-center border border-white bg-black font-mono text-base text-white transition-colors hover:bg-white hover:text-black disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-black disabled:hover:text-white"
-                    >
-                      +
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-5 flex items-center justify-between border-t border-white/20 pt-3 font-mono text-[10px] tracking-[0.1em] text-white/65 uppercase">
-                <span>{t.builder.dayUnit}</span>
-                <span className="tabular-nums">
-                  {formattedDays} × {formattedGuests} {t.builder.guestUnit}
-                </span>
-              </div>
-            </div>
-
-            {/* Колонка 3: Додаткові опції (768px–1023px — на всю ширину знизу, з 1024px — 3-тя колонка) */}
-            <div className="flex min-h-[220px] flex-col justify-between p-5 sm:p-6 md:col-span-2 md:min-h-[200px] lg:col-span-1 lg:min-h-[300px] lg:p-7">
-              <div>
-                <p className="border-b border-white/25 pb-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
-                  {t.builder.colExtras}
-                </p>
-
-                <div className="mt-4 grid grid-cols-1 gap-2.5 md:grid-cols-3 lg:grid-cols-1">
-                  {extraOptions.map((option) => {
-                    const isChecked = extras.includes(option.id);
-
-                    return (
-                      <button
-                        key={option.id}
-                        type="button"
-                        aria-pressed={isChecked}
-                        onClick={() => toggleExtra(option.id)}
-                        className={`flex min-h-[54px] w-full items-center justify-between gap-3 border border-white px-4 py-2.5 text-left transition-colors duration-200 ${
-                          isChecked
-                            ? "bg-white text-black"
-                            : "bg-black text-white hover:bg-white/10"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span
-                            aria-hidden="true"
-                            className={`flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px] leading-none ${
-                              isChecked
-                                ? "border-black bg-black text-white"
-                                : "border-white text-white"
+                        return (
+                          <button
+                            key={dest.id}
+                            type="button"
+                            aria-pressed={isSelected}
+                            onClick={() => handleDestChange(dest.id)}
+                            className={`flex min-h-11.5 w-full items-center justify-between border border-white px-3.5 py-2.5 text-left font-mono text-[11px] tracking-[0.08em] uppercase transition-colors duration-200 ${
+                              isSelected
+                                ? "bg-white font-bold text-black"
+                                : "bg-black text-white hover:bg-white/10"
                             }`}
                           >
-                            {isChecked ? "✓" : ""}
+                            <span className="truncate">
+                              {dest.code} / {dest.tabTitle}
+                            </span>
+                            <span
+                              aria-hidden="true"
+                              className="ml-2 shrink-0 tabular-nums"
+                            >
+                              {isSelected ? "■" : "□"}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex items-center justify-between border-t border-white/20 pt-3 font-mono text-[10px] tracking-widest text-white/65 uppercase">
+                    <span>{activeDestination?.country}</span>
+                    <span className="tabular-nums">
+                      ${baseRate.toLocaleString("en-US")} / DAY
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex min-h-72.5 flex-col justify-between border-b border-white p-5 sm:p-6">
+                  <div>
+                    <p className="border-b border-white/25 pb-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
+                      {t.builder.colParameters}
+                    </p>
+
+                    <div className="mt-5">
+                      <div className="flex items-center justify-between gap-2 font-mono text-[10px] tracking-widest text-white/75 uppercase">
+                        <span>{t.builder.daysLabel}</span>
+                        <span className="tabular-nums">
+                          {MIN_DAYS}-{MAX_DAYS}
+                        </span>
+                      </div>
+
+                      <div className="mt-3 flex items-center gap-3.5">
+                        <input
+                          type="range"
+                          min={MIN_DAYS}
+                          max={MAX_DAYS}
+                          step={1}
+                          value={days}
+                          aria-label={t.builder.daysLabel}
+                          style={getSliderStyle(days, MIN_DAYS, MAX_DAYS)}
+                          onChange={(e) => setDays(Number(e.target.value))}
+                          className="mono-range"
+                        />
+
+                        <div className="flex min-w-19 shrink-0 flex-col items-center justify-center border border-white bg-black px-2.5 py-2 text-center tabular-nums">
+                          <span className="font-display text-base leading-none font-bold text-white">
+                            {formattedDays}
                           </span>
-                          <span className="font-mono text-[11px] font-medium tracking-[0.08em] uppercase">
-                            {option.label}
+                          <span className="mt-1 font-mono text-[9px] leading-none tracking-widest text-white/75 uppercase">
+                            {t.builder.dayUnit}
                           </span>
                         </div>
+                      </div>
+                    </div>
 
-                        <span className="shrink-0 font-mono text-[11px] font-semibold tracking-[0.06em] tabular-nums">
-                          +${option.price.toLocaleString("en-US")}
+                    <div className="mt-6">
+                      <div className="flex items-center justify-between gap-2 font-mono text-[10px] tracking-widest text-white/75 uppercase">
+                        <span>{t.builder.guestsLabel}</span>
+                        <span className="tabular-nums">
+                          {MIN_GUESTS}–{MAX_GUESTS}
                         </span>
-                      </button>
-                    );
-                  })}
+                      </div>
+
+                      <div className="mt-3 flex items-center gap-3.5">
+                        <input
+                          type="range"
+                          min={MIN_GUESTS}
+                          max={MAX_GUESTS}
+                          step={1}
+                          value={guests}
+                          aria-label={t.builder.guestsLabel}
+                          style={getSliderStyle(guests, MIN_GUESTS, MAX_GUESTS)}
+                          onChange={(e) => setGuests(Number(e.target.value))}
+                          className="mono-range"
+                        />
+
+                        <div className="flex min-w-19 shrink-0 flex-col items-center justify-center border border-white bg-black px-2.5 py-2 text-center tabular-nums">
+                          <span className="font-display text-base leading-none font-bold text-white">
+                            {formattedGuests}
+                          </span>
+                          <span className="mt-1 font-mono text-[9px] leading-none tracking-widest text-white/75 uppercase">
+                            {t.builder.guestUnit}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 flex items-center justify-between border-t border-white/20 pt-3 font-mono text-[10px] tracking-widest text-white/65 uppercase">
+                    <span>{t.builder.dayUnit}</span>
+                    <span className="tabular-nums">
+                      {formattedDays} × {formattedGuests} {t.builder.guestUnit}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col justify-between p-5 sm:p-6 md:col-span-2">
+                  <div>
+                    <div className="flex items-center justify-between border-b border-white/25 pb-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
+                      <span>{t.builder.colExtras}</span>
+                      <span className="tabular-nums">
+                        {String(extras.length).padStart(2, "0")} /{" "}
+                        {String(extraOptions.length).padStart(2, "0")}
+                      </span>
+                    </div>
+
+                    <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                      {extraOptions.map((option) => {
+                        const isChecked = extras.includes(option.id);
+
+                        return (
+                          <button
+                            key={option.id}
+                            type="button"
+                            aria-pressed={isChecked}
+                            onClick={() => toggleExtra(option.id)}
+                            className={`flex min-h-16.5 w-full flex-col justify-between border border-white p-3 text-left transition-colors duration-200 ${
+                              isChecked
+                                ? "bg-white text-black"
+                                : "bg-black text-white hover:bg-white/10"
+                            }`}
+                          >
+                            <div className="flex items-center justify-between gap-2">
+                              <span
+                                aria-hidden="true"
+                                className={`flex h-4 w-4 shrink-0 items-center justify-center border font-mono text-[10px] leading-none ${
+                                  isChecked
+                                    ? "border-black bg-black text-white"
+                                    : "border-white text-white"
+                                }`}
+                              >
+                                {isChecked ? "✓" : ""}
+                              </span>
+
+                              <span className="font-mono text-[10px] font-semibold tracking-[0.06em] tabular-nums">
+                                +${option.price.toLocaleString("en-US")}
+                              </span>
+                            </div>
+
+                            <span className="mt-2.5 line-clamp-2 font-mono text-[10px] leading-[1.3] font-medium tracking-[0.06em] uppercase">
+                              {option.label}
+                            </span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               </div>
-
-              <div className="mt-5 flex items-center justify-between border-t border-white/20 pt-3 font-mono text-[10px] tracking-[0.1em] text-white/65 uppercase">
-                <span>ADD-ONS</span>
-                <span className="tabular-nums">
-                  {String(extras.length).padStart(2, "0")} /{" "}
-                  {String(extraOptions.length).padStart(2, "0")}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Чорний блок підсумку з кнопкою відкриття модального вікна */}
-          <div className="flex flex-col justify-between gap-6 border-t border-white bg-black p-5 sm:p-6 md:flex-row md:items-center lg:px-7 lg:py-6">
-            <div className="flex min-h-[60px] flex-col justify-center">
-              <p className="font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
-                {t.builder.summaryLabel}
-              </p>
-
-              <div className="mt-1.5 flex flex-wrap items-baseline gap-x-4 gap-y-1">
-                <span className="min-w-[140px] font-display text-2xl font-bold tracking-[-0.02em] text-white uppercase tabular-nums sm:text-3xl">
-                  {formattedPrice}
-                </span>
-                <span className="font-mono text-[10px] leading-[1.3] tracking-[0.1em] text-white/70 uppercase">
-                  {t.builder.summarySub}
-                </span>
-              </div>
             </div>
 
-            <button
-              type="button"
-              onClick={handleOpenModal}
-              className="inline-flex min-h-[50px] w-full shrink-0 items-center justify-center border border-white bg-white px-6 py-3.5 font-mono text-[11px] font-semibold tracking-[0.1em] whitespace-nowrap text-black uppercase transition-colors hover:bg-black hover:text-white md:w-[235px]"
-            >
-              {t.builder.openModalCta}
-            </button>
+            <aside className="flex flex-col justify-between border border-white bg-black p-5 sm:p-6 lg:col-span-5 lg:p-7">
+              <div>
+                <p className="font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase md:text-[11px]">
+                  {t.builder.specEyebrow}
+                </p>
+
+                <h3 className="mt-2.5 flex min-h-15 items-start font-display text-xl leading-[1.18] font-bold tracking-[-0.01em] text-white uppercase sm:text-2xl">
+                  {activeDestination?.title}
+                </h3>
+
+                <div className="mt-4 border-t border-white font-mono text-[10px] leading-[1.3] tracking-widest uppercase sm:text-[11px]">
+                  <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/20">
+                    <span className="text-white/65">
+                      {t.builder.specGroupLabel}
+                    </span>
+                    <span className="font-semibold text-white tabular-nums">
+                      {formattedGuests} {t.builder.guestUnit}
+                    </span>
+                  </div>
+
+                  <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/20">
+                    <span className="text-white/65">
+                      {t.builder.specDurationLabel}
+                    </span>
+                    <span className="font-semibold text-white tabular-nums">
+                      {formattedDays} {t.builder.dayUnit}
+                    </span>
+                  </div>
+
+                  <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/20">
+                    <span className="text-white/65">
+                      {t.builder.specLogisticsLabel}
+                    </span>
+                    <span className="text-right font-semibold text-white">
+                      {t.builder.specLogisticsValue}
+                    </span>
+                  </div>
+
+                  <div className="flex min-h-11 items-center justify-between gap-3">
+                    <span className="text-white/65">
+                      {t.builder.specExtrasLabel}
+                    </span>
+                    <span className="font-semibold text-white tabular-nums">
+                      {String(extras.length).padStart(2, "0")} /{" "}
+                      {String(extraOptions.length).padStart(2, "0")}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mt-3 flex min-h-22 flex-col justify-center border-t border-b border-white py-4">
+                  <p className="font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/70 uppercase">
+                    {t.builder.summaryLabel}
+                  </p>
+                  <p className="mt-2 font-display text-3xl leading-none font-bold tracking-[-0.02em] text-white uppercase tabular-nums sm:text-[36px]">
+                    {formattedPrice}
+                  </p>
+                </div>
+
+                <p className="mt-4 min-h-16.5 text-[12px] leading-[1.55] font-light text-white/75">
+                  {t.builder.specDisclaimer}
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleOpenModal}
+                className="mt-6 inline-flex min-h-12.5 w-full items-center justify-center border border-white bg-white px-5 py-3.5 font-mono text-[11px] font-semibold tracking-widest text-black uppercase transition-colors hover:bg-black hover:text-white"
+              >
+                {t.builder.openModalCta}
+              </button>
+            </aside>
           </div>
         </div>
       </div>

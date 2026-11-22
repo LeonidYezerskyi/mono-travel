@@ -50,6 +50,13 @@ export interface ExpeditionExtraOption {
   price: number;
 }
 
+export interface TestimonialItem {
+  id: string;
+  quote: string;
+  author: string;
+  trip: string;
+}
+
 export interface Dictionary {
   nav: {
     destinations: string;
@@ -110,9 +117,20 @@ export interface Dictionary {
     guestsLabel: string;
     guestUnit: string;
     extras: ExpeditionExtraOption[];
+    specEyebrow: string;
+    specGroupLabel: string;
+    specDurationLabel: string;
+    specExtrasLabel: string;
+    specLogisticsLabel: string;
+    specLogisticsValue: string;
+    specDisclaimer: string;
     summaryLabel: string;
-    summarySub: string;
     openModalCta: string;
+  };
+  testimonials: {
+    eyebrow: string;
+    source: string;
+    items: TestimonialItem[];
   };
   modal: {
     heading: string;
@@ -392,18 +410,45 @@ export const dictionary: Record<Language, Dictionary> = {
       colDestination: "01 / DESTINATION",
       colParameters: "02 / DURATION & GUESTS",
       colExtras: "03 / BESPOKE ADD-ONS",
-      daysLabel: "DURATION (3–14 DAYS)",
+      daysLabel: "DURATION",
       dayUnit: "DAYS",
-      guestsLabel: "GUESTS (1–6 PAX)",
+      guestsLabel: "GUESTS",
       guestUnit: "PAX",
       extras: [
         { id: "architect", label: "PRIVATE ARCHITECT", price: 4500 },
         { id: "helicopter", label: "HELICOPTER CHARTER", price: 8500 },
         { id: "film", label: "ANALOG FILM SHOOT", price: 3200 },
       ],
+      specEyebrow: "[ REQUEST SPECIFICATION ]",
+      specGroupLabel: "PARTY SIZE",
+      specDurationLabel: "DURATION",
+      specExtrasLabel: "SELECTED ADD-ONS",
+      specLogisticsLabel: "LOGISTICS CLASS",
+      specLogisticsValue: "ULTRA-LUXURY / PRIVATE",
+      specDisclaimer:
+        "Every route is tailored individually. Final calculation is confirmed by a dedicated curator after date verification.",
       summaryLabel: "ESTIMATED EXPEDITION TOTAL",
-      summarySub: "PRIVATE CONCIERGE & BESPOKE LOGISTICS INCLUDED",
-      openModalCta: "REQUEST EXPEDITION →",
+      openModalCta: "SEND FORMED BRIEF →",
+    },
+    testimonials: {
+      eyebrow: "[ 05 ] EDITORS & GUESTS REVIEWS",
+      source: "PRIVATE MEMBERS",
+      items: [
+        {
+          id: "iceland-review",
+          quote:
+            "“This is not just a travel agency. MONO TRAVEL creates the sensation of stepping into a cinematic frame of a brutalist film about the future. Impeccable style and zero compromises.”",
+          author: "ALEXANDER V.",
+          trip: "ICELAND EXPEDITION",
+        },
+        {
+          id: "patagonia-review",
+          quote:
+            "“The organization of our private helicopter tour over the glaciers of Patagonia was executed with Swiss-watch precision. The finest private travel experience.”",
+          author: "ELENA K.",
+          trip: "PATAGONIA PRIVATE TOUR",
+        },
+      ],
     },
     modal: {
       heading: "Expedition Inquiry",
@@ -680,18 +725,45 @@ export const dictionary: Record<Language, Dictionary> = {
       colDestination: "01 / НАПРЯМОК",
       colParameters: "02 / ТРИВАЛІСТЬ ТА ГОСТІ",
       colExtras: "03 / ПРИВАТНІ ОПЦІЇ",
-      daysLabel: "ТРИВАЛІСТЬ (3–14 ДНІВ)",
+      daysLabel: "ТРИВАЛІСТЬ",
       dayUnit: "ДНІВ",
-      guestsLabel: "КІЛЬКІСТЬ ГОСТЕЙ (1–6)",
+      guestsLabel: "КІЛЬКІСТЬ ГОСТЕЙ",
       guestUnit: "ГОСТЕЙ",
       extras: [
         { id: "architect", label: "ПРИВАТНИЙ АРХІТЕКТОР", price: 4500 },
         { id: "helicopter", label: "ГЕЛІКОПТЕР", price: 8500 },
         { id: "film", label: "ПЛІВКОВА ЗЙОМКА", price: 3200 },
       ],
+      specEyebrow: "[ СПЕЦИФІКАЦІЯ ВАШОГО ЗАПИТУ ]",
+      specGroupLabel: "СКЛАД ГРУПИ",
+      specDurationLabel: "ТРИВАЛІСТЬ",
+      specExtrasLabel: "ДОДАТКОВІ ОПЦІЇ",
+      specLogisticsLabel: "КЛАС ЛОГІСТИКИ",
+      specLogisticsValue: "ПРИВАТНИЙ УЛЬТРА-ЛЮКС",
+      specDisclaimer:
+        "Кожен маршрут проєктується індивідуально. Остаточний розрахунок надається персональним куратором після верифікації дати.",
       summaryLabel: "ОРІЄНТОВНА ВАРТІСТЬ ЕКСПЕДИЦІЇ",
-      summarySub: "ПРИВАТНИЙ КОНСЬЄРЖ ТА ІНДИВІДУАЛЬНА ЛОГІСТИКА",
-      openModalCta: "ОФОРМИТИ ЗАПИТ →",
+      openModalCta: "ВІДПРАВИТИ СФОРМОВАНИЙ БРИФ →",
+    },
+    testimonials: {
+      eyebrow: "[ 05 ] ВІДГУКИ РЕДАКТОРІВ ТА ГОСТЕЙ",
+      source: "ПРИВАТНІ УЧАСНИКИ",
+      items: [
+        {
+          id: "iceland-review",
+          quote:
+            "«Це не просто турагенція. MONO TRAVEL створюють відчуття, що ви потрапили у кінематографічний кадр бруталістського фільму про майбутнє. Бездоганний стиль і нуль компромісів.»",
+          author: "ОЛЕКСАНДР В.",
+          trip: "ЕКСПЕДИЦІЯ В ІСЛАНДІЮ",
+        },
+        {
+          id: "patagonia-review",
+          quote:
+            "«Організація приватного гелікоптерного туру над льодовиками Патагонії була виконана з точністю швейцарського годинника. Найкращий досвід приватного відпочинку.»",
+          author: "ОЛЕНА К.",
+          trip: "ПРИВАТНИЙ ТУР ПАТАГОНІЯ",
+        },
+      ],
     },
     modal: {
       heading: "Заявка на експедицію",

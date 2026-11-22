@@ -78,3 +78,56 @@ body {
     linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
   background-size: 60px 60px;
 }
+
+@layer components {
+  .mono-range {
+    --slider-progress: 50%;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    background: linear-gradient(
+      to right,
+      #ffffff 0%,
+      #ffffff var(--slider-progress),
+      rgba(255, 255, 255, 0.16) var(--slider-progress),
+      rgba(255, 255, 255, 0.16) 100%
+    );
+    cursor: pointer;
+    outline: none;
+  }
+
+  .mono-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+    transition: transform 150ms ease;
+  }
+
+  .mono-range::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+  }
+
+  .mono-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    background: #ffffff;
+    border: 1px solid #ffffff;
+    cursor: pointer;
+    transition: transform 150ms ease;
+  }
+
+  .mono-range::-moz-range-progress {
+    height: 100%;
+    border-radius: 9999px 0 0 9999px;
+    background: #ffffff;
+  }
+}
