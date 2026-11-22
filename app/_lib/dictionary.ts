@@ -11,6 +11,21 @@ export interface LocalizedText {
   en: string;
 }
 
+export interface ItineraryDay {
+  day: string;
+  title: string;
+  description: string;
+  meta: string;
+}
+
+export interface ItineraryRoute {
+  id: DestinationId;
+  code: string;
+  tabLabel: string;
+  subtitle: string;
+  days: ItineraryDay[];
+}
+
 export type DestinationId = "iceland" | "japan" | "patagonia" | "morocco";
 
 export interface DestinationItem {
@@ -72,6 +87,10 @@ export interface Dictionary {
     requestCta: string;
     selectCta: string;
     items: DestinationItem[];
+  };
+  itinerary: {
+    eyebrow: string;
+    routes: ItineraryRoute[];
   };
   builder: {
     eyebrow: string;
@@ -236,6 +255,127 @@ export const dictionary: Record<Language, Dictionary> = {
         },
       ],
     },
+    itinerary: {
+      eyebrow: "[ 03 ] EXPEDITION ITINERARY SAMPLE",
+      routes: [
+        {
+          id: "iceland",
+          code: "01",
+          tabLabel: "ICELAND",
+          subtitle: "ICELAND: VOLCANIC MONOLITHS & AURORA",
+          days: [
+            {
+              day: "DAY 01",
+              title: "KEFLAVÍK VIP ARRIVAL & HELI-TRANSFER TO HIGHLANDS",
+              description:
+                "Private tarmac reception and direct helicopter flight over active lava fields to a secluded basalt residence. Evening geothermal soak in a private mineral lagoon.",
+              meta: "TRANSPORT: Airbus H130 Helicopter  •  STAY: Deplar Farm",
+            },
+            {
+              day: "DAY 02–04",
+              title: "BLACK SAND BEACHES OF VÍK & ICE CAVES",
+              description:
+                "Private super-jeep expedition across Mýrdalsjökull glacier to untouched blue ice caverns. Sunset session on Reynisfjara black cliffs with zero crowds.",
+              meta: "EXPERIENCE: Private Ice Cave Access  •  STAY: Panorama Glass Lodge",
+            },
+            {
+              day: "DAY 05–07",
+              title: "JÖKULSÁRLÓN LAGOON & NORTHERN LIGHTS",
+              description:
+                "Private amphibious boat among drifting icebergs at dawn. Custom arctic tasting dinner prepared by a private chef beneath the Aurora Borealis.",
+              meta: "EXCLUSIVE: Private Lagoon Charter  •  STAY: Retreat at Blue Lagoon",
+            },
+          ],
+        },
+        {
+          id: "japan",
+          code: "02",
+          tabLabel: "JAPAN",
+          subtitle: "JAPAN: KYOTO SILENCE & NAOSHIMA ART",
+          days: [
+            {
+              day: "DAY 01",
+              title: "PRIVATE SUITE TO KYOTO & TWILIGHT TEA CEREMONY",
+              description:
+                "First-class arrival in Kyoto and private transfer to a restored 19th-century wooden machiya. Twilight tea ceremony in a closed Zen temple garden.",
+              meta: "TRANSPORT: Private Chauffeur & Gran Class  •  STAY: Aman Kyoto",
+            },
+            {
+              day: "DAY 02–04",
+              title: "ARASHIYAMA BAMBOO GROVES & MASTER ARTISANS",
+              description:
+                "Dawn access to Arashiyama before public opening. Private studio visits with a third-generation swordsmith and a Kyoto ceramic master.",
+              meta: "EXPERIENCE: After-Hours Temple Access  •  STAY: Hoshinoya Kyoto",
+            },
+            {
+              day: "DAY 05–07",
+              title: "SETO INLAND SEA & NAOSHIMA ARCHITECTURE",
+              description:
+                "Private cruiser across the Seto Inland Sea to Naoshima and Teshima islands. Curated architectural tour of Tadao Ando concrete museums.",
+              meta: "EXCLUSIVE: Private Art Island Yacht  •  STAY: Benesse House Oval",
+            },
+          ],
+        },
+        {
+          id: "patagonia",
+          code: "03",
+          tabLabel: "PATAGONIA",
+          subtitle: "PATAGONIA: AT THE EDGE OF THE UNIVERSE",
+          days: [
+            {
+              day: "DAY 01",
+              title: "BUENOS AIRES VIP & PRIVATE JET TO PUNTA ARENAS",
+              description:
+                "VIP terminal meet-and-greet and private jet charter to the gateway of Patagonia. Check-in at a conceptual eco-lodge on the Strait of Magellan with a private chef dinner.",
+              meta: "TRANSPORT: Bombardier Global 6000  •  STAY: The Singular Patagonia",
+            },
+            {
+              day: "DAY 02–04",
+              title: "TORRES DEL PAINE NATIONAL PARK",
+              description:
+                "Private trekking to the granite towers of Torres led by a high-altitude guide. Puma tracking with a wildlife biologist and evening hot furo soak under the stars.",
+              meta: "EXPERIENCE: Puma Photo-Safari  •  STAY: Tierra Patagonia Hotel & Spa",
+            },
+            {
+              day: "DAY 05–07",
+              title: "PERITO MORENO GLACIER & PRIVATE YACHT CRUISE",
+              description:
+                "Helicopter landing on the glacier in custom crampons and whisky served over 10,000-year-old ice. Private yacht cruise along the blue ice walls.",
+              meta: "EXCLUSIVE: Glacier Heli-Trekking  •  STAY: Eolo Lodge",
+            },
+          ],
+        },
+        {
+          id: "morocco",
+          code: "04",
+          tabLabel: "MOROCCO",
+          subtitle: "MOROCCO: ATLAS PEAKS & ERG CHEBBI DUNES",
+          days: [
+            {
+              day: "DAY 01",
+              title: "MARRAKECH PRIVATE RIAD & ROOFTOP DINING",
+              description:
+                "VIP fast-track arrival and transfer to an architectural private riad. Evening rooftop dinner overlooking the Koutoubia silhouette.",
+              meta: "TRANSPORT: Mercedes V-Class VIP  •  STAY: Royal Mansour Marrakech",
+            },
+            {
+              day: "DAY 02–04",
+              title: "HELICOPTER CROSSING OVER HIGH ATLAS TO KASBAHS",
+              description:
+                "Scenic helicopter flight over snow-dusted Atlas ridges to ancient earthen kasbahs. Private lunch in a Berber stone fortress.",
+              meta: "EXPERIENCE: Atlas Heli-Expedition  •  STAY: Kasbah Tamadot",
+            },
+            {
+              day: "DAY 05–07",
+              title: "DEEP SAHARA MONOLITHIC DESERT CAMP",
+              description:
+                "Private expedition into the silent dunes of Erg Chebbi. Astronomical stargazing session with a private astrophysicist beside a desert fire.",
+              meta: "EXCLUSIVE: Bespoke Dune Sanctuary  •  STAY: Private Sahara Camp",
+            },
+          ],
+        },
+      ],
+    },
     builder: {
       eyebrow: "CUSTOMIZER // 03",
       heading: "Expedition Builder",
@@ -393,6 +533,127 @@ export const dictionary: Record<Language, Dictionary> = {
           duration: "8 ДНІВ / 7 НОЧЕЙ",
           pricePerDay: 3900,
           image: "/images/morocco.jpg",
+        },
+      ],
+    },
+    itinerary: {
+      eyebrow: "[ 03 ] ПРИКЛАД ЕКСПЕДИЦІЙНОГО МАРШРУТУ",
+      routes: [
+        {
+          id: "iceland",
+          code: "01",
+          tabLabel: "ІСЛАНДІЯ",
+          subtitle: "ІСЛАНДІЯ: ВУЛКАНІЧНІ МОНОЛІТИ ТА СЯЙВО",
+          days: [
+            {
+              day: "ДЕНЬ 01",
+              title: "VIP-ПРИБУТТЯ У КЕФЛАВІК ТА ГЕЛІКОПТЕР ДО НАГІР'Я",
+              description:
+                "Зустріч біля трапу літака та прямий переліт гелікоптером над лавовими полями до відокремленої базальтової резиденції. Вечірнє купання у приватній геотермальній лагуні.",
+              meta: "ТРАНСПОРТ: Гелікоптер Airbus H130  •  ПРОЖИВАННЯ: Deplar Farm",
+            },
+            {
+              day: "ДЕНЬ 02-04",
+              title: "ЧОРНІ ПЛЯЖІ ВІК ТА ЛЬОДОВІ ПЕЧЕРИ",
+              description:
+                "Приватна експедиція на суперджипах льодовиком Мірдальсйокудль до закритих блакитних печер. Зйомка заходу сонця на чорних скелях Рейнісф'яра без туристів.",
+              meta: "ДОСВІД: Закритий доступ у льодові гроти  •  ПРОЖИВАННЯ: Panorama Glass Lodge",
+            },
+            {
+              day: "ДЕНЬ 05-07",
+              title: "ЛАГУНА ЙОКУЛЬСАРЛОН & ПІВНІЧНЕ СЯЙВО",
+              description:
+                "Приватний катер між дрейфуючими айсбергами на світанку. Авторська вечеря від приватного шеф-кухаря під Північним Сяйвом.",
+              meta: "ЕКСКЛЮЗИВ: Приватний чартер лагуною  •  ПРОЖИВАННЯ: Retreat at Blue Lagoon",
+            },
+          ],
+        },
+        {
+          id: "japan",
+          code: "02",
+          tabLabel: "ЯПОНІЯ",
+          subtitle: "ЯПОНІЯ: ТИША КІОТО & АРХІТЕКТУРА НАОШІМИ",
+          days: [
+            {
+              day: "ДЕНЬ 01",
+              title: "ПРИВАТНИЙ ПЕРЕЇЗД ДО КІОТО ТА ЧАЙНА ЦЕРЕМОНІЯ",
+              description:
+                "Індивідуальний трансфер до відреставрованої дерев'яної резиденції мачія XIX століття. Закрита чайна церемонія у саду дзен-храму після заходу сонця.",
+              meta: "ТРАНСПОРТ: Приватний шофер & Gran Class  •  ПРОЖИВАННЯ: Aman Kyoto",
+            },
+            {
+              day: "ДЕНЬ 02-04",
+              title: "БАМБУКОВИЙ ЛІС АРАШІЯМА ТА МАЙСТЕРНІ РЕМІСНИКІВ",
+              description:
+                "Ранковий доступ до Арашіями до відкриття для відвідувачів. Приватні візити до майстерень коваля клинків та майстра кераміки.",
+              meta: "ДОСВІД: Закритий доступ до храмів  •  ПРОЖИВАННЯ: Hoshinoya Kyoto",
+            },
+            {
+              day: "ДЕНЬ 05-07",
+              title: "ВНУТРІШНЄ ЯПОНСЬКЕ МОРЕ & ОСТРІВ НАОШІМА",
+              description:
+                "Приватна яхта до островів Наошіма та Тешіма. Кураторська архітектурна екскурсія бетонними музеями Тадао Андо.",
+              meta: "ЕКСКЛЮЗИВ: Приватна яхта островом  •  ПРОЖИВАННЯ: Benesse House Oval",
+            },
+          ],
+        },
+        {
+          id: "patagonia",
+          code: "03",
+          tabLabel: "ПАТАГОНІЯ",
+          subtitle: "ПАТАГОНІЯ: НА КРАЮ ВСЕСВІТУ",
+          days: [
+            {
+              day: "ДЕНЬ 01",
+              title: "БУЕНОС-АЙРЕС VIP ТА ПРИВАТНИЙ ДЖЕТ ДО ПУНТА-АРЕНАС",
+              description:
+                "Зустріч у VIP-терміналі та переліт джетом до воріт Патагонії. Розміщення у концептуальному еколоджі на березі Магелланової протоки з вечерею від шефа.",
+              meta: "ТРАНСПОРТ: Bombardier Global 6000  •  ПРОЖИВАННЯ: Singular Patagonia",
+            },
+            {
+              day: "ДЕНЬ 02-04",
+              title: "НАЦІОНАЛЬНИЙ ПАРК ТОРРЕС-ДЕЛЬ-ПАЙНЕ",
+              description:
+                "Трекінг до гранітних веж Торрес під керівництвом гіда. Спостереження за пумами з фото-біологом та вечірнє купання у гарячих фуро під відкритим небом.",
+              meta: "ДОСВІД: Фотосафарі з пумами  •  ПРОЖИВАННЯ: Tierra Patagonia Hotel & Spa",
+            },
+            {
+              day: "ДЕНЬ 05-07",
+              title: "ЛЬОДОВИК ПЕРІТО-МОРЕНО & КРУЇЗ НА ПРИВАТНІЙ ЯХТІ",
+              description:
+                "Висадка на льодовик у спеціальних кішках і віскі зі стародавнім льодом віком понад 10 000 років. Приватна яхта вздовж блакитних крижаних стін.",
+              meta: "ЕКСКЛЮЗИВ: Гелі-трекінг по льоду  •  ПРОЖИВАННЯ: Eolo Lodge",
+            },
+          ],
+        },
+        {
+          id: "morocco",
+          code: "04",
+          tabLabel: "МАРОККО",
+          subtitle: "МАРОККО: ВЕРШИНИ АТЛАСУ & ДЮНИ ЕРГ-ШЕББІ",
+          days: [
+            {
+              day: "ДЕНЬ 01",
+              title: "ПРИВАТНИЙ РІАД У МАРРАКЕШІ ТА ВЕЧЕРЯ НА ДАХУ",
+              description:
+                "VIP-зустріч в аеропорту та трансфер до закритого архітектурного ріаду. Вечеря на терасі з видом на силует мечеті Кутубія.",
+              meta: "ТРАНСПОРТ: Mercedes V-Class VIP  •  ПРОЖИВАННЯ: Royal Mansour Marrakech",
+            },
+            {
+              day: "ДЕНЬ 02-04",
+              title: "ПЕРЕЛІТ ГЕЛІКОПТЕРОМ ЧЕРЕЗ ВИСОКИЙ АТЛАС ДО КАСБ",
+              description:
+                "Панорамний переліт над засніженими хребтами Атлаських гір до стародавніх глиняних касб. Приватний обід у гірській фортеці.",
+              meta: "ДОСВІД: Гелі-експедиція Атласом  •  ПРОЖИВАННЯ: Kasbah Tamadot",
+            },
+            {
+              day: "ДЕНЬ 05-07",
+              title: "МОНОЛІТНИЙ ТАБІР У ГЛИБИНІ САХАРИ",
+              description:
+                "Експедиція у безлюдні дюни Ерг-Шеббі. Нічне спостереження за зоряним небом з астрофізиком біля пустельного багаття.",
+              meta: "ЕКСКЛЮЗИВ: Приватний табір у дюнах  •  ПРОЖИВАННЯ: Private Sahara Camp",
+            },
+          ],
         },
       ],
     },

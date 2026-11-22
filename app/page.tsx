@@ -1,6 +1,7 @@
 import { DestinationShowcase } from "./_components/DestinationShowcase";
 import { Header } from "./_components/Header";
 import { HeroSection } from "./_components/HeroSection";
+import { ItinerarySection } from "./_components/ItinerarySection";
 import { ManifestoSection } from "./_components/ManifestoSection";
 import { WorldClockTicker } from "./_components/WorldClockTicker";
 
@@ -13,6 +14,7 @@ export default function HomePage() {
         <HeroSection />
         <ManifestoSection />
         <DestinationShowcase />
+        <ItinerarySection />
       </main>
     </div>
   );
