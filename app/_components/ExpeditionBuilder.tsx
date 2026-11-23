@@ -137,7 +137,7 @@ export function ExpeditionBuilder({
                             type="button"
                             aria-pressed={isSelected}
                             onClick={() => handleDestChange(dest.id)}
-                            className={`flex w-full cursor-pointer items-center justify-between gap-2 border border-white px-3.5 py-2.5 text-left font-mono text-[10px] leading-[1.25] tracking-[0.08em] uppercase transition-colors duration-200 sm:text-[11px] ${
+                            className={`flex w-full cursor-pointer items-center justify-between gap-2 border border-white px-3.5 py-2.5 text-left font-mono text-[10px] leading-tight tracking-[0.08em] uppercase transition-colors duration-200 sm:text-[11px] ${
                               isSelected
                                 ? "bg-white font-bold text-black"
                                 : "bg-black text-white hover:bg-white/10"

@@ -48,12 +48,12 @@ export function WorldClockTicker() {
 
   const renderCells = (prefix: string) => (
     <>
-      <div className="flex items-center gap-2 md:min-w-52 lg:min-w-72 px-3 lg:px-5 py-2 bg-black shrink-0">
+      <div className="flex w-64 shrink-0 items-center gap-2 bg-black px-3 py-2 lg:w-72 lg:px-5">
         <span
           aria-hidden="true"
-          className="inline-block w-2 h-2 rounded-full bg-white/75 mono-second-pulse shrink-0"
+          className="mono-second-pulse inline-block h-2 w-2 shrink-0 rounded-full bg-white/75"
         />
-        <span className="font-semibold tracking-[0.12em] lg:tracking-[0.14em] whitespace-nowrap">
+        <span className="font-semibold tracking-[0.12em] whitespace-nowrap lg:tracking-[0.14em]">
           {statusText}
         </span>
       </div>
@@ -68,12 +68,12 @@ export function WorldClockTicker() {
         return (
           <div
             key={`${prefix}-${city.id}`}
-            className="flex items-center justify-between gap-1.5 md:min-w-28 lg:min-w-40 px-3 lg:px-4 py-2 font-sans tabular-nums bg-black shrink-0"
+            className="flex w-40 shrink-0 items-center justify-between gap-1.5 bg-black px-3 py-2 font-sans tabular-nums lg:w-44 lg:px-4"
           >
-            <span className="text-white/75 whitespace-nowrap">
+            <span className="whitespace-nowrap text-white/75">
               {cityLabel}:
             </span>
-            <span className="font-semibold text-white whitespace-nowrap">
+            <span className="font-semibold whitespace-nowrap text-white">
               {timeText}
             </span>
           </div>
@@ -83,22 +83,22 @@ export function WorldClockTicker() {
   );
 
   return (
-    <div className="w-full max-w-full border-b border-white/20 bg-black text-white text-[10px] lg:text-[11px] tracking-[0.12em] lg:tracking-[0.14em] uppercase overflow-hidden">
+    <div className="w-full max-w-full overflow-hidden border-b border-white/20 bg-black text-[10px] tracking-[0.12em] text-white uppercase lg:text-[11px] lg:tracking-[0.14em]">
       {/* Mobile (< md): seamless marquee */}
-      <div className="flex md:hidden w-full max-w-full overflow-hidden bg-black">
+      <div className="flex w-full max-w-full overflow-hidden bg-black md:hidden">
         <div className="mono-marquee-track divide-x divide-white/20 bg-black">
-          <div className="flex flex-nowrap items-center divide-x divide-white/20 bg-black shrink-0">
+          <div className="flex shrink-0 flex-nowrap items-center divide-x divide-white/20 bg-black">
             {renderCells("m1")}
-            <div className="px-4 py-2 text-white/75 whitespace-nowrap bg-black shrink-0">
+            <div className="w-32 shrink-0 bg-black px-4 py-2 text-center whitespace-nowrap text-white/75">
               [ EST. 2024 ]
             </div>
           </div>
           <div
             aria-hidden="true"
-            className="flex flex-nowrap items-center divide-x divide-white/20 bg-black shrink-0"
+            className="flex shrink-0 flex-nowrap items-center divide-x divide-white/20 bg-black"
           >
             {renderCells("m2")}
-            <div className="px-4 py-2 text-white/75 whitespace-nowrap bg-black shrink-0">
+            <div className="w-32 shrink-0 bg-black px-4 py-2 text-center whitespace-nowrap text-white/75">
               [ EST. 2024 ]
             </div>
           </div>
@@ -106,12 +106,12 @@ export function WorldClockTicker() {
       </div>
 
       {/* Tablet & Desktop (md+) */}
-      <div className="hidden md:flex items-center justify-between w-full max-w-full px-2 lg:px-4 bg-black">
-        <div className="flex items-center divide-x divide-white/20 bg-black min-w-0">
+      <div className="hidden w-full max-w-full items-center justify-between bg-black px-2 md:flex lg:px-4">
+        <div className="flex min-w-0 items-center divide-x divide-white/20 bg-black">
           {renderCells("d")}
         </div>
 
-        <div className="px-3 lg:px-4 py-2 font-medium text-white/80 tracking-[0.14em] lg:tracking-[0.16em] whitespace-nowrap bg-black shrink-0">
+        <div className="w-32 shrink-0 bg-black px-3 py-2 text-right font-medium tracking-[0.14em] whitespace-nowrap text-white/80 lg:w-36 lg:px-4 lg:tracking-[0.16em]">
           [ EST. 2024 ]
         </div>
       </div>
