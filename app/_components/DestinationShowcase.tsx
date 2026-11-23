@@ -22,8 +22,26 @@ export function DestinationShowcase({
 
   if (!active) return null;
 
+  const metaRows = [
+    {
+      label: t.destinations.coordinatesLabel,
+      value: active.coords,
+      desktopHeight: "md:h-8",
+    },
+    {
+      label: t.destinations.seasonLabel,
+      value: active.season,
+      desktopHeight: "md:h-10",
+    },
+    {
+      label: t.destinations.durationLabel,
+      value: active.duration,
+      desktopHeight: "md:h-8",
+    },
+  ];
+
   const requestCtaClassName =
-    "inline-flex min-h-[46px] w-full shrink-0 items-center justify-center border border-white bg-white px-5 py-3 font-mono text-[11px] font-semibold tracking-[0.1em] whitespace-nowrap text-black uppercase transition-colors hover:bg-black hover:text-white sm:w-[205px] xl:w-[215px] xl:px-6";
+    "inline-flex min-h-[46px] w-full shrink-0 cursor-pointer items-center justify-center border border-white bg-white px-5 py-3 font-mono text-[11px] font-semibold tracking-[0.1em] whitespace-nowrap text-black uppercase transition-colors hover:bg-black hover:text-white sm:w-[205px] xl:w-[215px] xl:px-6";
 
   return (
     <section
@@ -58,7 +76,7 @@ export function DestinationShowcase({
                       role="tab"
                       aria-selected={isActive}
                       onClick={() => setActiveId(item.id)}
-                      className={`group flex w-full items-center justify-between gap-4 border border-white px-4 py-3.5 text-left transition-colors duration-200 md:px-4 md:py-3.5 lg:px-6 lg:py-5 ${
+                      className={`group flex w-full cursor-pointer items-center justify-between gap-4 border border-white px-4 py-3.5 text-left transition-colors duration-200 md:px-4 md:py-3.5 lg:px-6 lg:py-5 ${
                         isActive
                           ? "bg-white text-black"
                           : "bg-black text-white hover:bg-white/10"
@@ -90,31 +108,18 @@ export function DestinationShowcase({
                 })}
               </div>
 
-              <div className="hidden border border-white px-4 py-3.5 font-mono text-[10px] leading-[1.2] tracking-[0.08em] uppercase md:block lg:px-5 lg:py-4 lg:text-[11px] lg:tracking-widest">
-                <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2.5 md:h-8 lg:h-auto lg:pb-3">
-                  <span className="text-white/65">
-                    {t.destinations.coordinatesLabel}
-                  </span>
-                  <span className="text-right font-semibold text-white">
-                    {active.coords}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-2 border-b border-white/25 py-2.5 md:h-10 lg:h-auto lg:py-3">
-                  <span className="text-white/65">
-                    {t.destinations.seasonLabel}
-                  </span>
-                  <span className="text-right font-semibold text-white">
-                    {active.season}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-2 pt-2.5 md:h-8 lg:h-auto lg:pt-3">
-                  <span className="text-white/65">
-                    {t.destinations.durationLabel}
-                  </span>
-                  <span className="text-right font-semibold text-white">
-                    {active.duration}
-                  </span>
-                </div>
+              <div className="hidden divide-y divide-white/25 border border-white px-4 py-1 font-mono text-[10px] leading-[1.2] tracking-[0.08em] uppercase md:block lg:px-5 lg:py-1 lg:text-[11px] lg:tracking-widest">
+                {metaRows.map((row) => (
+                  <div
+                    key={row.label}
+                    className={`flex items-center justify-between gap-2 py-2.5 lg:h-auto lg:py-3 ${row.desktopHeight}`}
+                  >
+                    <span className="text-white/65">{row.label}</span>
+                    <span className="text-right font-semibold text-white">
+                      {row.value}
+                    </span>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -161,31 +166,18 @@ export function DestinationShowcase({
                   )}
                 </div>
 
-                <div className="mt-5 border-t border-white/25 pt-4 font-mono text-[10px] leading-[1.35] tracking-[0.08em] uppercase min-[22.5rem]:tracking-widest md:hidden">
-                  <div className="flex flex-col gap-1 border-b border-white/20 pb-2.5 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3">
-                    <span className="text-white/65">
-                      {t.destinations.coordinatesLabel}
-                    </span>
-                    <span className="font-semibold text-white min-[22.5rem]:text-right">
-                      {active.coords}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-1 border-b border-white/20 py-2.5 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3">
-                    <span className="text-white/65">
-                      {t.destinations.seasonLabel}
-                    </span>
-                    <span className="font-semibold text-white min-[22.5rem]:text-right">
-                      {active.season}
-                    </span>
-                  </div>
-                  <div className="flex flex-col gap-1 pt-2.5 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3">
-                    <span className="text-white/65">
-                      {t.destinations.durationLabel}
-                    </span>
-                    <span className="font-semibold text-white min-[22.5rem]:text-right">
-                      {active.duration}
-                    </span>
-                  </div>
+                <div className="mt-5 divide-y divide-white/20 border-t border-white/25 pt-1.5 font-mono text-[10px] leading-[1.35] tracking-[0.08em] uppercase min-[22.5rem]:tracking-widest md:hidden">
+                  {metaRows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex flex-col gap-1 py-2.5 last:pb-0 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3"
+                    >
+                      <span className="text-white/65">{row.label}</span>
+                      <span className="font-semibold text-white min-[22.5rem]:text-right">
+                        {row.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

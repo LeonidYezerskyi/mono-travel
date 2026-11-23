@@ -48,6 +48,62 @@ function getSliderStyle(
   } as CSSProperties;
 }
 
+interface RangeParameterControlProps {
+  label: string;
+  rangeText: string;
+  value: number;
+  min: number;
+  max: number;
+  formattedValue: string;
+  unitLabel: string;
+  onChange: (value: number) => void;
+  className?: string;
+}
+
+function RangeParameterControl({
+  label,
+  rangeText,
+  value,
+  min,
+  max,
+  formattedValue,
+  unitLabel,
+  onChange,
+  className = "",
+}: RangeParameterControlProps) {
+  return (
+    <div className={className}>
+      <div className="flex items-center justify-between gap-2 font-mono text-[10px] tracking-widest text-white/75 uppercase">
+        <span>{label}</span>
+        <span className="tabular-nums">{rangeText}</span>
+      </div>
+
+      <div className="mt-3 flex items-center gap-3.5">
+        <input
+          type="range"
+          min={min}
+          max={max}
+          step={1}
+          value={value}
+          aria-label={label}
+          style={getSliderStyle(value, min, max)}
+          onChange={(e) => onChange(Number(e.target.value))}
+          className="mono-range cursor-pointer"
+        />
+
+        <div className="flex min-w-19 shrink-0 flex-col items-center justify-center border border-white bg-black px-2.5 py-2 text-center tabular-nums">
+          <span className="font-display text-base leading-none font-bold text-white">
+            {formattedValue}
+          </span>
+          <span className="mt-1 font-mono text-[9px] leading-none tracking-widest text-white/75 uppercase">
+            {unitLabel}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function ExpeditionBuilder({
   selectedDestinationId,
   onSelectDestinationId,
@@ -90,6 +146,29 @@ export function ExpeditionBuilder({
   const formattedPrice = `$${totalPrice.toLocaleString("en-US")}`;
   const formattedDays = String(days).padStart(2, "0");
   const formattedGuests = String(guests).padStart(2, "0");
+
+  const specRows = [
+    {
+      label: t.builder.specGroupLabel,
+      value: `${formattedGuests} ${t.builder.guestUnit}`,
+      tabular: true,
+    },
+    {
+      label: t.builder.specDurationLabel,
+      value: `${formattedDays} ${t.builder.dayUnit}`,
+      tabular: true,
+    },
+    {
+      label: t.builder.specLogisticsLabel,
+      value: t.builder.specLogisticsValue,
+      alignRight: true,
+    },
+    {
+      label: t.builder.specExtrasLabel,
+      value: `${String(extras.length).padStart(2, "0")} / ${String(extraOptions.length).padStart(2, "0")}`,
+      tabular: true,
+    },
+  ];
 
   const handleOpenModal = () => {
     onOpenModal?.({
@@ -172,69 +251,29 @@ export function ExpeditionBuilder({
                       {t.builder.colParameters}
                     </p>
 
-                    <div className="mt-5">
-                      <div className="flex items-center justify-between gap-2 font-mono text-[10px] tracking-widest text-white/75 uppercase">
-                        <span>{t.builder.daysLabel}</span>
-                        <span className="tabular-nums">
-                          {MIN_DAYS}-{MAX_DAYS}
-                        </span>
-                      </div>
+                    <RangeParameterControl
+                      label={t.builder.daysLabel}
+                      rangeText={`${MIN_DAYS}-${MAX_DAYS}`}
+                      value={days}
+                      min={MIN_DAYS}
+                      max={MAX_DAYS}
+                      formattedValue={formattedDays}
+                      unitLabel={t.builder.dayUnit}
+                      onChange={setDays}
+                      className="mt-5"
+                    />
 
-                      <div className="mt-3 flex items-center gap-3.5">
-                        <input
-                          type="range"
-                          min={MIN_DAYS}
-                          max={MAX_DAYS}
-                          step={1}
-                          value={days}
-                          aria-label={t.builder.daysLabel}
-                          style={getSliderStyle(days, MIN_DAYS, MAX_DAYS)}
-                          onChange={(e) => setDays(Number(e.target.value))}
-                          className="mono-range cursor-pointer"
-                        />
-
-                        <div className="flex min-w-19 shrink-0 flex-col items-center justify-center border border-white bg-black px-2.5 py-2 text-center tabular-nums">
-                          <span className="font-display text-base leading-none font-bold text-white">
-                            {formattedDays}
-                          </span>
-                          <span className="mt-1 font-mono text-[9px] leading-none tracking-widest text-white/75 uppercase">
-                            {t.builder.dayUnit}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="mt-6">
-                      <div className="flex items-center justify-between gap-2 font-mono text-[10px] tracking-widest text-white/75 uppercase">
-                        <span>{t.builder.guestsLabel}</span>
-                        <span className="tabular-nums">
-                          {MIN_GUESTS}–{MAX_GUESTS}
-                        </span>
-                      </div>
-
-                      <div className="mt-3 flex items-center gap-3.5">
-                        <input
-                          type="range"
-                          min={MIN_GUESTS}
-                          max={MAX_GUESTS}
-                          step={1}
-                          value={guests}
-                          aria-label={t.builder.guestsLabel}
-                          style={getSliderStyle(guests, MIN_GUESTS, MAX_GUESTS)}
-                          onChange={(e) => setGuests(Number(e.target.value))}
-                          className="mono-range cursor-pointer"
-                        />
-
-                        <div className="flex min-w-19 shrink-0 flex-col items-center justify-center border border-white bg-black px-2.5 py-2 text-center tabular-nums">
-                          <span className="font-display text-base leading-none font-bold text-white">
-                            {formattedGuests}
-                          </span>
-                          <span className="mt-1 font-mono text-[9px] leading-none tracking-widest text-white/75 uppercase">
-                            {t.builder.guestUnit}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
+                    <RangeParameterControl
+                      label={t.builder.guestsLabel}
+                      rangeText={`${MIN_GUESTS}–${MAX_GUESTS}`}
+                      value={guests}
+                      min={MIN_GUESTS}
+                      max={MAX_GUESTS}
+                      formattedValue={formattedGuests}
+                      unitLabel={t.builder.guestUnit}
+                      onChange={setGuests}
+                      className="mt-6"
+                    />
                   </div>
 
                   <div className="mt-5 flex items-center justify-between border-t border-white/20 pt-3 font-mono text-[10px] tracking-widest text-white/65 uppercase">
@@ -310,43 +349,22 @@ export function ExpeditionBuilder({
                   {activeDestination?.title}
                 </h3>
 
-                <div className="mt-4 border-t border-white font-mono text-[10px] leading-[1.3] tracking-widest uppercase sm:text-[11px]">
-                  <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/20">
-                    <span className="text-white/65">
-                      {t.builder.specGroupLabel}
-                    </span>
-                    <span className="font-semibold text-white tabular-nums">
-                      {formattedGuests} {t.builder.guestUnit}
-                    </span>
-                  </div>
-
-                  <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/20">
-                    <span className="text-white/65">
-                      {t.builder.specDurationLabel}
-                    </span>
-                    <span className="font-semibold text-white tabular-nums">
-                      {formattedDays} {t.builder.dayUnit}
-                    </span>
-                  </div>
-
-                  <div className="flex min-h-11 items-center justify-between gap-3 border-b border-white/20">
-                    <span className="text-white/65">
-                      {t.builder.specLogisticsLabel}
-                    </span>
-                    <span className="text-right font-semibold text-white">
-                      {t.builder.specLogisticsValue}
-                    </span>
-                  </div>
-
-                  <div className="flex min-h-11 items-center justify-between gap-3">
-                    <span className="text-white/65">
-                      {t.builder.specExtrasLabel}
-                    </span>
-                    <span className="font-semibold text-white tabular-nums">
-                      {String(extras.length).padStart(2, "0")} /{" "}
-                      {String(extraOptions.length).padStart(2, "0")}
-                    </span>
-                  </div>
+                <div className="mt-4 divide-y divide-white/20 border-t border-white font-mono text-[10px] leading-[1.3] tracking-widest uppercase sm:text-[11px]">
+                  {specRows.map((row) => (
+                    <div
+                      key={row.label}
+                      className="flex min-h-11 items-center justify-between gap-3"
+                    >
+                      <span className="text-white/65">{row.label}</span>
+                      <span
+                        className={`font-semibold text-white ${
+                          row.tabular ? "tabular-nums" : ""
+                        } ${row.alignRight ? "text-right" : ""}`}
+                      >
+                        {row.value}
+                      </span>
+                    </div>
+                  ))}
                 </div>
 
                 <div className="mt-3 flex min-h-22 flex-col justify-center border-t border-b border-white py-4">

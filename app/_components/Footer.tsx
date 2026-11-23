@@ -4,6 +4,12 @@ import type { SyntheticEvent } from "react";
 import { useState } from "react";
 import { useLanguage } from "../_context/LanguageContext";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function isValidEmail(value: string): boolean {
+  return EMAIL_REGEX.test(value.trim());
+}
+
 export function Footer() {
   const { t } = useLanguage();
 
@@ -15,10 +21,8 @@ export function Footer() {
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const trimmed = email.trim();
-    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed);
 
-    if (!isValid) {
+    if (!isValidEmail(email)) {
       setStatus("invalid");
       return;
     }
@@ -37,12 +41,13 @@ export function Footer() {
     }
   };
 
-  const statusMessage =
-    status === "submitted"
-      ? t.footer.subscribedMessage
-      : status === "invalid"
-        ? t.footer.invalidEmailMessage
-        : "";
+  const statusMessages: Record<"idle" | "invalid" | "submitted", string> = {
+    idle: "",
+    invalid: t.footer.invalidEmailMessage,
+    submitted: t.footer.subscribedMessage,
+  };
+
+  const statusMessage = statusMessages[status];
 
   return (
     <footer className="bg-black text-white">

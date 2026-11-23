@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useCallback, useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { useLanguage } from "../_context/LanguageContext";
 import {
@@ -23,12 +23,61 @@ const INITIAL_ACTION_STATE: ExpeditionActionState = {
   contactError: false,
 };
 
+const FIELD_CLASS_NAME =
+  "mt-1.5 w-full border-b border-black/35 bg-transparent py-2.5 font-mono text-xs tracking-wider text-black placeholder:text-black/40 focus:border-b-2 focus:border-black focus:outline-none sm:text-sm";
+
 function formatPriceDisplay(value?: number | string): string | null {
   if (value === undefined || value === null || value === "") return null;
   if (typeof value === "number") {
     return `$${value.toLocaleString("en-US")}`;
   }
   return value;
+}
+
+interface TextFieldProps {
+  id: string;
+  name: string;
+  label: string;
+  value: string;
+  placeholder: string;
+  error?: string;
+  onChange: (value: string) => void;
+}
+
+function TextField({
+  id,
+  name,
+  label,
+  value,
+  placeholder,
+  error,
+  onChange,
+}: TextFieldProps) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
+      >
+        {label} *
+      </label>
+      <input
+        id={id}
+        name={name}
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder={placeholder}
+        className={FIELD_CLASS_NAME}
+      />
+      <p
+        role="alert"
+        className="mt-1 min-h-4 font-mono text-[10px] font-semibold tracking-wider text-red-700/80 uppercase"
+      >
+        {error ?? ""}
+      </p>
+    </div>
+  );
 }
 
 interface BookingFormProps {
@@ -83,53 +132,25 @@ function BookingForm({
         value={summaryData ? JSON.stringify(summaryData) : ""}
       />
 
-      <div>
-        <label
-          htmlFor="booking-name"
-          className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
-        >
-          {t.booking.nameLabel} *
-        </label>
-        <input
-          id="booking-name"
-          name="fullName"
-          type="text"
-          value={fullName}
-          onChange={(e) => onFullNameChange(e.target.value)}
-          placeholder={t.booking.namePlaceholder}
-          className="mt-1.5 w-full border-b border-black/35 bg-transparent py-2.5 font-mono text-xs tracking-wider text-black placeholder:text-black/40 focus:border-b-2 focus:border-black focus:outline-none sm:text-sm"
-        />
-        <p
-          role="alert"
-          className="mt-1 min-h-4 font-mono text-[10px] font-semibold tracking-wider text-red-700/80 uppercase"
-        >
-          {state.nameError ? t.booking.nameError : ""}
-        </p>
-      </div>
+      <TextField
+        id="booking-name"
+        name="fullName"
+        label={t.booking.nameLabel}
+        value={fullName}
+        placeholder={t.booking.namePlaceholder}
+        error={state.nameError ? t.booking.nameError : undefined}
+        onChange={onFullNameChange}
+      />
 
-      <div>
-        <label
-          htmlFor="booking-contact"
-          className="block font-mono text-[10px] tracking-[0.14em] text-black/75 uppercase sm:text-[11px]"
-        >
-          {t.booking.contactLabel} *
-        </label>
-        <input
-          id="booking-contact"
-          name="contact"
-          type="text"
-          value={contact}
-          onChange={(e) => onContactChange(e.target.value)}
-          placeholder={t.booking.contactPlaceholder}
-          className="mt-1.5 w-full border-b border-black/35 bg-transparent py-2.5 font-mono text-xs tracking-wider text-black placeholder:text-black/40 focus:border-b-2 focus:border-black focus:outline-none sm:text-sm"
-        />
-        <p
-          role="alert"
-          className="mt-1 min-h-4 font-mono text-[10px] font-semibold tracking-wider text-red-700/80 uppercase"
-        >
-          {state.contactError ? t.booking.contactError : ""}
-        </p>
-      </div>
+      <TextField
+        id="booking-contact"
+        name="contact"
+        label={t.booking.contactLabel}
+        value={contact}
+        placeholder={t.booking.contactPlaceholder}
+        error={state.contactError ? t.booking.contactError : undefined}
+        onChange={onContactChange}
+      />
 
       <div>
         <label
@@ -145,7 +166,7 @@ function BookingForm({
           value={comment}
           onChange={(e) => onCommentChange(e.target.value)}
           placeholder={t.booking.commentPlaceholder}
-          className="mt-1.5 w-full resize-none border-b border-black/35 bg-transparent py-2.5 font-mono text-xs leading-normal tracking-wider text-black placeholder:text-black/40 focus:border-b-2 focus:border-black focus:outline-none sm:text-sm"
+          className={`${FIELD_CLASS_NAME} resize-none leading-normal`}
         />
       </div>
 
@@ -226,6 +247,15 @@ export function BookingModal({
     };
   }, [isOpen, onClose]);
 
+  const handleFormSuccess = useCallback((requestId?: string) => {
+    setSubmittedRequestId(requestId ?? "CONFIRMED");
+  }, []);
+
+  const handleEditDetails = () => {
+    setSubmittedRequestId(null);
+    setFormKey((prev) => prev + 1);
+  };
+
   if (!isOpen) return null;
 
   const destinationLabelText =
@@ -243,14 +273,38 @@ export function BookingModal({
     formattedPrice,
   );
 
-  const handleFormSuccess = (requestId?: string) => {
-    setSubmittedRequestId(requestId ?? "CONFIRMED");
-  };
-
-  const handleEditDetails = () => {
-    setSubmittedRequestId(null);
-    setFormKey((prev) => prev + 1);
-  };
+  const summaryItems = [
+    destinationLabelText && {
+      label: t.booking.destinationLabel,
+      value: destinationLabelText,
+      fullWidth: true,
+    },
+    typeof summaryData?.days === "number" && {
+      label: t.booking.durationLabel,
+      value: `${summaryData.days} ${t.booking.daysUnit}`,
+      tabular: true,
+    },
+    typeof summaryData?.guests === "number" && {
+      label: t.booking.guestsLabel,
+      value: `${summaryData.guests} ${t.booking.guestsUnit}`,
+      tabular: true,
+    },
+    {
+      label: t.booking.addonsLabel,
+      value:
+        summaryData?.addons && summaryData.addons.length > 0
+          ? summaryData.addons.join(" · ")
+          : t.booking.noAddonsLabel,
+      fullWidth: true,
+      regularWeight: true,
+    },
+  ].filter(Boolean) as Array<{
+    label: string;
+    value: string;
+    fullWidth?: boolean;
+    tabular?: boolean;
+    regularWeight?: boolean;
+  }>;
 
   return (
     <div
@@ -291,10 +345,10 @@ export function BookingModal({
           {isSuccessVisible ? (
             <div className="border border-black bg-black p-6 text-white sm:p-8">
               <p className="font-mono text-[10px] tracking-[0.14em] text-white/65 uppercase">
-                [ STATUS: CONFIRMED
+                [ {lang === "en" ? "STATUS: CONFIRMED" : "СТАТУС: ПІДТВЕРДЖЕНО"}
                 {submittedRequestId && submittedRequestId !== "CONFIRMED"
                   ? ` · ${submittedRequestId}`
-                  : ""}
+                  : ""}{" "}
                 ]
               </p>
               <h3 className="mt-2 font-display text-xl font-bold tracking-wide uppercase sm:text-2xl">
@@ -334,49 +388,25 @@ export function BookingModal({
 
                 {hasStructuredSummary ? (
                   <div className="mt-3 grid grid-cols-1 gap-3 font-mono text-[11px] uppercase sm:grid-cols-2">
-                    {destinationLabelText && (
-                      <div className="border-b border-black/15 pb-2 sm:col-span-2">
+                    {summaryItems.map((item) => (
+                      <div
+                        key={item.label}
+                        className={`border-b border-black/15 pb-2 ${
+                          item.fullWidth ? "sm:col-span-2" : ""
+                        }`}
+                      >
                         <span className="block text-[10px] tracking-[0.12em] text-black/60">
-                          {t.booking.destinationLabel}
+                          {item.label}
                         </span>
-                        <span className="mt-0.5 block font-semibold text-black">
-                          {destinationLabelText}
+                        <span
+                          className={`mt-0.5 block text-black ${
+                            item.regularWeight ? "" : "font-semibold"
+                          } ${item.tabular ? "tabular-nums" : ""}`}
+                        >
+                          {item.value}
                         </span>
                       </div>
-                    )}
-
-                    {typeof summaryData?.days === "number" && (
-                      <div className="border-b border-black/15 pb-2">
-                        <span className="block text-[10px] tracking-[0.12em] text-black/60">
-                          {t.booking.durationLabel}
-                        </span>
-                        <span className="mt-0.5 block font-semibold text-black tabular-nums">
-                          {summaryData.days} {t.booking.daysUnit}
-                        </span>
-                      </div>
-                    )}
-
-                    {typeof summaryData?.guests === "number" && (
-                      <div className="border-b border-black/15 pb-2">
-                        <span className="block text-[10px] tracking-[0.12em] text-black/60">
-                          {t.booking.guestsLabel}
-                        </span>
-                        <span className="mt-0.5 block font-semibold text-black tabular-nums">
-                          {summaryData.guests} {t.booking.guestsUnit}
-                        </span>
-                      </div>
-                    )}
-
-                    <div className="border-b border-black/15 pb-2 sm:col-span-2">
-                      <span className="block text-[10px] tracking-[0.12em] text-black/60">
-                        {t.booking.addonsLabel}
-                      </span>
-                      <span className="mt-0.5 block text-black">
-                        {summaryData?.addons && summaryData.addons.length > 0
-                          ? summaryData.addons.join(" · ")
-                          : t.booking.noAddonsLabel}
-                      </span>
-                    </div>
+                    ))}
 
                     {formattedPrice && (
                       <div className="flex items-baseline justify-between pt-1 sm:col-span-2">

@@ -8,11 +8,15 @@ type HeroSectionProps = {
   onOpenConsultation?: () => void;
 };
 
+const DISCUSS_CTA_CLASS_NAME =
+  "inline-flex min-h-12 w-full items-center justify-center border border-white bg-white px-5 py-3.5 font-mono text-xs font-medium tracking-[0.08em] whitespace-nowrap text-black uppercase transition-colors hover:bg-black hover:text-white sm:w-62.5 xl:min-h-13 xl:w-67.5 xl:px-7 xl:py-4";
+
 export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
   const { t } = useLanguage();
   const items = t.hero.marquee;
   const discussLabel =
     t.hero.discussCta ?? (t.hero.primaryCta || "ОБГОВОРИТИ ПОДОРОЖ →");
+  const badges = [t.hero.badge1, t.hero.badge2];
 
   return (
     <section className="grid-bg relative flex min-h-[calc(100vh-5rem)] flex-col justify-between overflow-hidden border-b border-white text-white">
@@ -53,15 +57,12 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
                 <button
                   type="button"
                   onClick={onOpenConsultation}
-                  className="inline-flex min-h-12 w-full items-center justify-center border border-white bg-white px-5 py-3.5 font-mono text-xs font-medium tracking-[0.08em] whitespace-nowrap text-black uppercase transition-colors hover:bg-black hover:text-white sm:w-62.5 xl:min-h-13 xl:w-67.5 xl:px-7 xl:py-4"
+                  className={DISCUSS_CTA_CLASS_NAME}
                 >
                   {discussLabel}
                 </button>
               ) : (
-                <a
-                  href="#builder"
-                  className="inline-flex min-h-12 w-full items-center justify-center border border-white bg-white px-5 py-3.5 font-mono text-xs font-medium tracking-[0.08em] whitespace-nowrap text-black uppercase transition-colors hover:bg-black hover:text-white sm:w-62.5 xl:min-h-13 xl:w-67.5 xl:px-7 xl:py-4"
-                >
+                <a href="#builder" className={DISCUSS_CTA_CLASS_NAME}>
                   {discussLabel}
                 </a>
               )}
@@ -69,12 +70,14 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] uppercase md:justify-end md:text-[11px]">
-            <span className="min-w-44 border border-white px-3.5 py-2 text-center">
-              {t.hero.badge1}
-            </span>
-            <span className="min-w-44 border border-white px-3.5 py-2 text-center">
-              {t.hero.badge2}
-            </span>
+            {badges.map((badge) => (
+              <span
+                key={badge}
+                className="min-w-44 border border-white px-3.5 py-2 text-center"
+              >
+                {badge}
+              </span>
+            ))}
           </div>
         </div>
       </div>
@@ -120,20 +123,22 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
 
       <div className="relative z-10 flex h-9 items-center overflow-hidden border-t border-white bg-white font-mono text-[11px] font-bold tracking-[0.12em] text-black uppercase md:h-10 md:text-[12px] xl:h-11 xl:text-[13px]">
         <div className="mono-marquee-track flex h-full items-center">
-          <div className="flex shrink-0 items-center">
-            {items.map((item) => (
-              <span key={item} className="pr-8 whitespace-nowrap">
-                {item}
-              </span>
-            ))}
-          </div>
-          <div aria-hidden="true" className="flex shrink-0 items-center">
-            {items.map((item) => (
-              <span key={`${item}-copy`} className="pr-8 whitespace-nowrap">
-                {item}
-              </span>
-            ))}
-          </div>
+          {(["primary", "copy"] as const).map((track) => (
+            <div
+              key={track}
+              aria-hidden={track === "copy" ? true : undefined}
+              className="flex shrink-0 items-center"
+            >
+              {items.map((item) => (
+                <span
+                  key={track === "copy" ? `${item}-copy` : item}
+                  className="pr-8 whitespace-nowrap"
+                >
+                  {item}
+                </span>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
     </section>

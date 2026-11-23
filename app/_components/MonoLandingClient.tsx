@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useLanguage } from "../_context/LanguageContext";
+import type { DestinationItem } from "../_lib/dictionary";
 import { BookingModal, type BookingSummaryData } from "./BookingModal";
 import { DestinationShowcase } from "./DestinationShowcase";
 import {
@@ -15,7 +16,6 @@ import { ItinerarySection } from "./ItinerarySection";
 import { ManifestoSection } from "./ManifestoSection";
 import { TestimonialsSection } from "./TestimonialsSection";
 import { WorldClockTicker } from "./WorldClockTicker";
-import type { DestinationItem } from "../_lib/dictionary";
 
 export function MonoLandingClient() {
   const { t } = useLanguage();
@@ -24,25 +24,31 @@ export function MonoLandingClient() {
   const [bookingSummary, setBookingSummary] =
     useState<BookingSummaryData | null>(null);
 
-  const handleOpenConsultation = () => {
-    setBookingSummary(null);
+  const openBookingModal = useCallback((summary: BookingSummaryData | null) => {
+    setBookingSummary(summary);
     setBookingOpen(true);
-  };
+  }, []);
 
-  const handleOpenDestinationBooking = (destination: DestinationItem) => {
-    setBookingSummary({
-      mode: "destination",
-      destination,
-    });
-    setBookingOpen(true);
-  };
+  const handleOpenConsultation = useCallback(() => {
+    openBookingModal(null);
+  }, [openBookingModal]);
+
+  const handleOpenDestinationBooking = useCallback(
+    (destination: DestinationItem) => {
+      openBookingModal({
+        mode: "destination",
+        destination,
+      });
+    },
+    [openBookingModal],
+  );
 
   const handleOpenBuilderModal = (payload: ExpeditionConfigPayload) => {
     const addonLabels = t.builder.extras
       .filter((opt) => payload.extras.includes(opt.id))
       .map((opt) => opt.label);
 
-    setBookingSummary({
+    openBookingModal({
       mode: "builder",
       destination: payload.destinationTitle,
       days: payload.days,
@@ -50,16 +56,14 @@ export function MonoLandingClient() {
       addons: addonLabels,
       estimatedPrice: payload.totalPrice,
     });
-
-    setBookingOpen(true);
   };
 
-  const handleCloseBooking = () => {
+  const handleCloseBooking = useCallback(() => {
     setBookingOpen(false);
-  };
+  }, []);
 
   return (
-    <div className="min-h-screen w-full max-w-full bg-black text-white overflow-x-clip">
+    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-black text-white">
       <WorldClockTicker />
       <Header onOpenBooking={handleOpenConsultation} />
 

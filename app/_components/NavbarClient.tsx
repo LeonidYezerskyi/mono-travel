@@ -1,11 +1,67 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "../_context/LanguageContext";
 
 interface NavbarClientProps {
   onOpenBooking?: () => void;
+}
+
+interface LanguageSwitcherProps {
+  lang: "uk" | "en";
+  onSelectLang: (targetLang: "uk" | "en") => void;
+  containerClassName: string;
+  buttonClassName: (isActive: boolean) => string;
+  bracketClassName?: string;
+  separatorClassName?: string;
+  withAriaBrackets?: boolean;
+}
+
+function LanguageSwitcher({
+  lang,
+  onSelectLang,
+  containerClassName,
+  buttonClassName,
+  bracketClassName = "",
+  separatorClassName = "text-white/35",
+  withAriaBrackets = false,
+}: LanguageSwitcherProps) {
+  return (
+    <div className={containerClassName}>
+      <span
+        className={bracketClassName}
+        aria-hidden={withAriaBrackets ? true : undefined}
+      >
+        [
+      </span>
+      <button
+        type="button"
+        onClick={() => onSelectLang("uk")}
+        aria-pressed={lang === "uk"}
+        className={buttonClassName(lang === "uk")}
+      >
+        UA
+      </button>
+      <span className={separatorClassName} aria-hidden="true">
+        |
+      </span>
+      <button
+        type="button"
+        onClick={() => onSelectLang("en")}
+        aria-pressed={lang === "en"}
+        className={buttonClassName(lang === "en")}
+      >
+        EN
+      </button>
+      <span
+        className={bracketClassName}
+        aria-hidden={withAriaBrackets ? true : undefined}
+      >
+        ]
+      </span>
+    </div>
+  );
 }
 
 export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
@@ -35,7 +91,15 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
     },
   ];
 
-  const handleCloseMenu = () => setMobileMenuOpen(false);
+  const handleSelectLang = (targetLang: "uk" | "en") => {
+    if (lang !== targetLang) {
+      toggleLang();
+    }
+  };
+
+  const handleCloseMenu = useCallback(() => {
+    setMobileMenuOpen(false);
+  }, []);
 
   const handleBookingClick = () => {
     setMobileMenuOpen(false);
@@ -55,7 +119,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setMobileMenuOpen(false);
+        handleCloseMenu();
       }
     };
 
@@ -64,7 +128,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
       document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, handleCloseMenu]);
 
   return (
     <>
@@ -90,44 +154,21 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
         </ul>
 
         {/* Language Switcher: [ UA | EN ] */}
-        <div
-          role="group"
-          aria-label="Language switcher"
-          className="inline-flex w-19 shrink-0 items-center justify-center gap-1 border border-white/35 bg-black px-1.5 py-1.5 text-[8.5px] font-medium tracking-[0.08em] text-white uppercase lg:w-22 lg:gap-1.5 lg:px-2 lg:py-2 lg:text-[10px] lg:tracking-[0.12em] xl:w-25 xl:px-3 xl:text-[11px] xl:tracking-[0.14em]"
-        >
-          <span className="text-white/60" aria-hidden="true">
-            [
-          </span>
-          <button
-            type="button"
-            onClick={() => lang !== "uk" && toggleLang()}
-            aria-pressed={lang === "uk"}
-            className={`cursor-pointer transition-colors duration-300 ease-out ${
-              lang === "uk"
-                ? "font-bold text-white underline decoration-[1.5px] underline-offset-4"
-                : "text-white/55 hover:text-white"
-            }`}
-          >
-            UA
-          </button>
-          <span className="text-white/35" aria-hidden="true">
-            |
-          </span>
-          <button
-            type="button"
-            onClick={() => lang !== "en" && toggleLang()}
-            aria-pressed={lang === "en"}
-            className={`cursor-pointer transition-colors duration-300 ease-out ${
-              lang === "en"
-                ? "font-bold text-white underline decoration-[1.5px] underline-offset-4"
-                : "text-white/55 hover:text-white"
-            }`}
-          >
-            EN
-          </button>
-          <span className="text-white/60" aria-hidden="true">
-            ]
-          </span>
+        <div role="group" aria-label="Language switcher">
+          <LanguageSwitcher
+            lang={lang}
+            onSelectLang={handleSelectLang}
+            withAriaBrackets
+            bracketClassName="text-white/60"
+            containerClassName="inline-flex w-19 shrink-0 items-center justify-center gap-1 border border-white/35 bg-black px-1.5 py-1.5 text-[8.5px] font-medium tracking-[0.08em] text-white uppercase lg:w-22 lg:gap-1.5 lg:px-2 lg:py-2 lg:text-[10px] lg:tracking-[0.12em] xl:w-25 xl:px-3 xl:text-[11px] xl:tracking-[0.14em]"
+            buttonClassName={(isActive) =>
+              `cursor-pointer transition-colors duration-300 ease-out ${
+                isActive
+                  ? "font-bold text-white underline decoration-[1.5px] underline-offset-4"
+                  : "text-white/55 hover:text-white"
+              }`
+            }
+          />
         </div>
 
         {/* Book CTA Button */}
@@ -221,33 +262,19 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
             <span className="text-white/70">
               {lang === "uk" ? "МОВА / LANGUAGE" : "LANGUAGE / МОВА"}
             </span>
-            <div className="inline-flex items-center gap-2 border border-white/35 px-3 py-1.5">
-              <span>[</span>
-              <button
-                type="button"
-                onClick={() => lang !== "uk" && toggleLang()}
-                className={`cursor-pointer ${
-                  lang === "uk"
+            <LanguageSwitcher
+              lang={lang}
+              onSelectLang={handleSelectLang}
+              separatorClassName={undefined}
+              containerClassName="inline-flex items-center gap-2 border border-white/35 px-3 py-1.5"
+              buttonClassName={(isActive) =>
+                `cursor-pointer ${
+                  isActive
                     ? "font-bold text-white underline underline-offset-4"
                     : "text-white/55"
-                }`}
-              >
-                UA
-              </button>
-              <span className="text-white/35">|</span>
-              <button
-                type="button"
-                onClick={() => lang !== "en" && toggleLang()}
-                className={`cursor-pointer ${
-                  lang === "en"
-                    ? "font-bold text-white underline underline-offset-4"
-                    : "text-white/55"
-                }`}
-              >
-                EN
-              </button>
-              <span>]</span>
-            </div>
+                }`
+              }
+            />
           </div>
 
           <button
