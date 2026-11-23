@@ -59,16 +59,18 @@ export function ItinerarySection() {
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => handleSelectRoute(route.id)}
-                className={`flex items-center justify-between border border-white px-3.5 py-2.5 text-left font-mono text-[10px] leading-[1.2] tracking-[0.12em] uppercase transition-colors duration-200 sm:px-4 sm:py-3 md:text-[11px] ${
+                className={`flex h-12 cursor-pointer items-center justify-between gap-2 border border-white px-3.5 text-left font-mono text-[10px] leading-[1.2] tracking-[0.12em] uppercase transition-colors duration-200 sm:h-11 sm:px-4 md:text-[11px] ${
                   isActive
                     ? "bg-white font-bold text-black"
                     : "bg-black text-white hover:bg-white/10"
                 }`}
               >
-                <span>
+                <span className="line-clamp-2 min-w-0">
                   {route.code} / {route.tabLabel}
                 </span>
-                <span aria-hidden="true">{isActive ? "●" : "○"}</span>
+                <span aria-hidden="true" className="shrink-0">
+                  {isActive ? "●" : "○"}
+                </span>
               </button>
             );
           })}
@@ -88,33 +90,33 @@ export function ItinerarySection() {
                     type="button"
                     aria-expanded={isOpen}
                     onClick={() => toggleDay(idx)}
-                    className="group flex min-h-20.5 w-full items-center justify-between gap-4 bg-black px-4 py-4 text-left text-white transition-colors duration-200 hover:bg-white hover:text-black sm:min-h-19 sm:px-6 sm:py-5"
+                    className="cursor-pointer group flex w-full items-start justify-between gap-4 bg-black px-4 py-4 text-left text-white transition-colors duration-200 hover:bg-white hover:text-black sm:items-center sm:px-6 sm:py-5"
                   >
-                    <div className="flex flex-col items-start gap-2.5 sm:flex-row sm:items-center sm:gap-5">
+                    <div className="flex min-w-0 flex-col items-start gap-2.5 sm:flex-row sm:items-center sm:gap-5">
                       <span className="inline-block min-w-24.5 shrink-0 border border-white px-2.5 py-1 text-center font-mono text-[10px] leading-none font-medium tracking-[0.12em] uppercase transition-colors duration-200 group-hover:border-black md:text-[11px]">
                         {item.day}
                       </span>
 
-                      <h3 className="font-display text-[15px] leading-tight font-bold tracking-[-0.01em] uppercase sm:text-[17px] md:text-[19px] xl:text-[21px]">
+                      <h3 className="flex h-19 items-start font-display text-[15px] leading-tight font-bold tracking-[-0.01em] uppercase sm:h-11 sm:items-center sm:text-[17px] md:text-[19px] lg:h-12 xl:h-auto xl:text-[21px]">
                         {item.title}
                       </h3>
                     </div>
 
                     <span
                       aria-hidden="true"
-                      className="shrink-0 font-mono text-base leading-none font-normal sm:text-lg"
+                      className="mt-1 shrink-0 font-mono text-base leading-none font-normal sm:mt-0 sm:text-lg"
                     >
                       {isOpen ? "-" : "+"}
                     </span>
                   </button>
 
                   {isOpen && (
-                    <div className="flex min-h-43 flex-col justify-between border-t border-white px-4 py-5 sm:min-h-36 sm:px-6 sm:py-6">
-                      <p className="max-w-4xl text-[13px] leading-[1.6] font-light text-white/90 sm:text-[14px] md:text-[15px]">
+                    <div className="flex flex-col justify-between border-t border-white px-4 py-5 sm:px-6 sm:py-6">
+                      <p className="h-32 max-w-4xl text-[13px] leading-[1.6] font-light text-white/90 sm:h-20 sm:text-[14px] md:text-[15px] lg:h-12">
                         {item.description}
                       </p>
 
-                      <p className="mt-4 font-mono text-[10px] leading-[1.4] tracking-widest text-white/70 uppercase sm:text-[11px]">
+                      <p className="mt-4 flex h-11 items-center font-mono text-[10px] leading-[1.4] tracking-widest text-white/70 uppercase sm:h-auto sm:text-[11px]">
                         {item.meta}
                       </p>
                     </div>

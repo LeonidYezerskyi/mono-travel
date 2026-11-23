@@ -137,18 +137,18 @@ export function ExpeditionBuilder({
                             type="button"
                             aria-pressed={isSelected}
                             onClick={() => handleDestChange(dest.id)}
-                            className={`flex min-h-11.5 w-full items-center justify-between border border-white px-3.5 py-2.5 text-left font-mono text-[11px] tracking-[0.08em] uppercase transition-colors duration-200 ${
+                            className={`flex w-full cursor-pointer items-center justify-between gap-2 border border-white px-3.5 py-2.5 text-left font-mono text-[10px] leading-[1.25] tracking-[0.08em] uppercase transition-colors duration-200 sm:text-[11px] ${
                               isSelected
                                 ? "bg-white font-bold text-black"
                                 : "bg-black text-white hover:bg-white/10"
                             }`}
                           >
-                            <span className="truncate">
+                            <span className="flex h-7 min-w-0 items-center sm:h-auto">
                               {dest.code} / {dest.tabTitle}
                             </span>
                             <span
                               aria-hidden="true"
-                              className="ml-2 shrink-0 tabular-nums"
+                              className="shrink-0 tabular-nums"
                             >
                               {isSelected ? "■" : "□"}
                             </span>
@@ -190,7 +190,7 @@ export function ExpeditionBuilder({
                           aria-label={t.builder.daysLabel}
                           style={getSliderStyle(days, MIN_DAYS, MAX_DAYS)}
                           onChange={(e) => setDays(Number(e.target.value))}
-                          className="mono-range"
+                          className="mono-range cursor-pointer"
                         />
 
                         <div className="flex min-w-19 shrink-0 flex-col items-center justify-center border border-white bg-black px-2.5 py-2 text-center tabular-nums">
@@ -222,7 +222,7 @@ export function ExpeditionBuilder({
                           aria-label={t.builder.guestsLabel}
                           style={getSliderStyle(guests, MIN_GUESTS, MAX_GUESTS)}
                           onChange={(e) => setGuests(Number(e.target.value))}
-                          className="mono-range"
+                          className="mono-range cursor-pointer"
                         />
 
                         <div className="flex min-w-19 shrink-0 flex-col items-center justify-center border border-white bg-black px-2.5 py-2 text-center tabular-nums">
@@ -265,7 +265,7 @@ export function ExpeditionBuilder({
                             type="button"
                             aria-pressed={isChecked}
                             onClick={() => toggleExtra(option.id)}
-                            className={`flex min-h-16.5 w-full flex-col justify-between border border-white p-3 text-left transition-colors duration-200 ${
+                            className={`flex min-h-16.5 w-full cursor-pointer flex-col justify-between border border-white p-3 text-left transition-colors duration-200 ${
                               isChecked
                                 ? "bg-white text-black"
                                 : "bg-black text-white hover:bg-white/10"
@@ -306,7 +306,7 @@ export function ExpeditionBuilder({
                   {t.builder.specEyebrow}
                 </p>
 
-                <h3 className="mt-2.5 flex min-h-15 items-start font-display text-xl leading-[1.18] font-bold tracking-[-0.01em] text-white uppercase sm:text-2xl">
+                <h3 className="mt-2.5 flex h-22 items-start font-display text-lg leading-[1.18] font-bold tracking-[-0.01em] text-white uppercase sm:h-auto sm:min-h-15 sm:text-xl lg:h-11 lg:text-lg xl:h-16 xl:text-2xl">
                   {activeDestination?.title}
                 </h3>
 
@@ -358,7 +358,7 @@ export function ExpeditionBuilder({
                   </p>
                 </div>
 
-                <p className="mt-4 min-h-16.5 text-[12px] leading-[1.55] font-light text-white/75">
+                <p className="mt-4 h-24 text-[12px] leading-[1.55] font-light text-white/75 sm:h-auto sm:min-h-16.5">
                   {t.builder.specDisclaimer}
                 </p>
               </div>
@@ -366,7 +366,7 @@ export function ExpeditionBuilder({
               <button
                 type="button"
                 onClick={handleOpenModal}
-                className="mt-6 inline-flex min-h-12.5 w-full items-center justify-center border border-white bg-white px-5 py-3.5 font-mono text-[11px] font-semibold tracking-widest text-black uppercase transition-colors hover:bg-black hover:text-white"
+                className="mt-6 inline-flex h-14 w-full cursor-pointer items-center justify-center border border-white bg-white px-5 py-3.5 font-mono text-[11px] font-semibold tracking-widest text-black uppercase transition-colors hover:bg-black hover:text-white sm:h-12.5"
               >
                 {t.builder.openModalCta}
               </button>

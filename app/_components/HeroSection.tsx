@@ -30,7 +30,7 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
           {t.hero.eyebrow}
         </p>
 
-        <h1 className="font-display text-[36px] leading-[0.95] font-extrabold tracking-[-0.03em] uppercase sm:text-[54px] md:text-[68px] xl:text-[84px]">
+        <h1 className="min-h-27 font-display text-[36px] leading-[0.95] font-extrabold tracking-[-0.03em] uppercase sm:min-h-41 sm:text-[54px] md:min-h-50 md:text-[68px] xl:min-h-42. xl:text-[84px]">
           <span className="block">{t.hero.titleLine1}</span>
           <span className="mt-1 inline-flex flex-wrap items-baseline gap-x-3 md:gap-x-5">
             <span className="font-serif text-[38px] leading-[0.95] font-normal tracking-[-0.01em] uppercase italic sm:text-[54px] md:text-[68px] xl:text-[84px]">
@@ -44,7 +44,7 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
 
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-3xl">
-            <p className="text-[15px] leading-normal font-light text-white/90 md:text-base xl:text-[17px]">
+            <p className="h-34 text-[15px] leading-normal font-light text-white/90 md:h-auto md:text-base xl:text-[17px]">
               {t.hero.subtitle}
             </p>
 
@@ -95,12 +95,12 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
               <div className="pointer-events-none absolute inset-0 hidden bg-linear-to-t from-black via-black/25 to-transparent opacity-80 md:block" />
             </div>
 
-            <div className="z-10 flex flex-col items-start justify-between gap-3 border-t border-white/20 bg-black p-3.5 md:absolute md:right-6 md:bottom-6 md:left-6 md:flex-row md:items-end md:gap-4 md:border-t-0 md:bg-transparent md:p-0">
-              <div>
+            <div className="z-10 flex flex-col items-start justify-between gap-3 border-t border-white/20 bg-black p-3.5 md:absolute md:right-6 md:bottom-6 md:left-6 md:grid md:grid-cols-[minmax(0,1fr)_auto] md:items-end md:gap-4 md:border-t-0 md:bg-transparent md:p-0">
+              <div className="min-w-0">
                 <span className="inline-block bg-white px-2 py-1 font-mono text-[10px] font-bold tracking-[0.12em] text-black uppercase">
                   {t.hero.cardFlagship}
                 </span>
-                <h2 className="mt-2 font-display text-[18px] leading-[1.15] font-bold tracking-[-0.01em] uppercase sm:text-[20px] md:text-[24px] xl:text-[28px]">
+                <h2 className="mt-2 min-h-15.75 font-display text-[18px] leading-[1.15] font-bold tracking-[-0.01em] uppercase sm:min-h-17.5 sm:text-[20px] md:min-h-21 md:text-[24px] xl:min-h-24.5 xl:text-[28px]">
                   {t.hero.cardTitle}
                 </h2>
                 <p className="mt-1 font-mono text-[10px] leading-[1.2] tracking-[0.12em] text-white/80 uppercase md:text-[11px]">
@@ -109,7 +109,7 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
               </div>
               <a
                 href="#destinations"
-                className="inline-flex min-h-11 w-full items-center justify-center border border-white bg-black px-5 py-3 text-xs tracking-[0.08em] whitespace-nowrap text-white uppercase transition-colors hover:bg-white hover:text-black md:w-auto md:px-6"
+                className="inline-flex min-h-11 w-full shrink-0 items-center justify-center border border-white bg-black px-5 py-3 text-xs tracking-[0.08em] whitespace-nowrap text-white uppercase transition-colors hover:bg-white hover:text-black md:w-64 md:px-6"
               >
                 {t.hero.cardCta}
               </a>

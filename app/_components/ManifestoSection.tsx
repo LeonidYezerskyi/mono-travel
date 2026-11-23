@@ -16,7 +16,7 @@ export function ManifestoSection() {
           <span className="font-mono text-[11px] leading-[1.2] tracking-[0.12em] text-white uppercase md:text-xs">
             {manifesto.eyebrow}
           </span>
-          <p className="font-serif text-lg leading-none font-normal text-white italic md:text-xl xl:text-2xl">
+          <p className="flex h-9 items-center font-serif text-lg leading-none font-normal text-white italic sm:h-auto sm:block md:text-xl xl:text-2xl">
             {manifesto.motto}
           </p>
         </div>
@@ -47,7 +47,7 @@ export function ManifestoSection() {
                     {card.title}
                   </h2>
 
-                  <p className="mt-4 text-[14px] leading-[1.6] font-light text-white/85 transition-colors duration-300 group-hover:text-black/85 md:text-[15px]">
+                  <p className="mt-4 text-[14px] leading-[1.6] font-light text-white/85 transition-colors duration-300 group-hover:text-black/85 md:text-[15px] lg:h-36">
                     {card.description}
                   </p>
                 </div>

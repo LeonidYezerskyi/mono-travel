@@ -64,7 +64,7 @@ export function DestinationShowcase({
                           : "bg-black text-white hover:bg-white/10"
                       }`}
                     >
-                      <div>
+                      <div className="min-w-0">
                         <span
                           className={`block font-mono text-[10px] leading-[1.2] tracking-[0.12em] uppercase ${
                             isActive ? "text-black/75" : "text-white/65"
@@ -72,14 +72,14 @@ export function DestinationShowcase({
                         >
                           {item.code} / {item.country}
                         </span>
-                        <span className="mt-1.5 block font-display text-[15px] leading-[1.2] font-bold tracking-[-0.01em] uppercase md:text-[14px] lg:text-[17px] xl:text-[19px]">
+                        <span className="mt-1.5 flex items-center font-display text-[15px] leading-[1.2] font-bold tracking-[-0.01em] uppercase md:h-12 md:text-[14px] lg:h-10 lg:text-[17px] xl:h-auto xl:text-[19px]">
                           {item.tabTitle}
                         </span>
                       </div>
 
                       <span
                         aria-hidden="true"
-                        className={`font-mono text-sm transition-transform duration-200 group-hover:translate-x-1 ${
+                        className={`shrink-0 font-mono text-sm transition-transform duration-200 group-hover:translate-x-1 ${
                           isActive ? "text-black" : "text-white/80"
                         }`}
                       >
@@ -91,7 +91,7 @@ export function DestinationShowcase({
               </div>
 
               <div className="hidden border border-white px-4 py-3.5 font-mono text-[10px] leading-[1.2] tracking-[0.08em] uppercase md:block lg:px-5 lg:py-4 lg:text-[11px] lg:tracking-widest">
-                <div className="flex items-center justify-between gap-3 border-b border-white/25 pb-2.5 lg:pb-3">
+                <div className="flex items-center justify-between gap-2 border-b border-white/25 pb-2.5 md:h-8 lg:h-auto lg:pb-3">
                   <span className="text-white/65">
                     {t.destinations.coordinatesLabel}
                   </span>
@@ -99,7 +99,7 @@ export function DestinationShowcase({
                     {active.coords}
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-3 border-b border-white/25 py-2.5 lg:py-3">
+                <div className="flex items-center justify-between gap-2 border-b border-white/25 py-2.5 md:h-10 lg:h-auto lg:py-3">
                   <span className="text-white/65">
                     {t.destinations.seasonLabel}
                   </span>
@@ -107,7 +107,7 @@ export function DestinationShowcase({
                     {active.season}
                   </span>
                 </div>
-                <div className="flex items-center justify-between gap-3 pt-2.5 lg:pt-3">
+                <div className="flex items-center justify-between gap-2 pt-2.5 md:h-8 lg:h-auto lg:pt-3">
                   <span className="text-white/65">
                     {t.destinations.durationLabel}
                   </span>
@@ -118,71 +118,74 @@ export function DestinationShowcase({
               </div>
             </div>
 
-            <div className="border border-white bg-black p-4 sm:p-5 md:col-span-7">
-              <div className="relative aspect-4/5 w-full overflow-hidden border border-white/20 sm:aspect-16/10">
-                <Image
-                  key={active.id}
-                  src={active.image}
-                  alt={active.title}
-                  fill
-                  sizes="(max-width: 767px) 100vw, 55vw"
-                  className="editorial-photo object-cover transition-transform duration-700 hover:scale-105"
-                />
+            <div className="flex flex-col justify-between border border-white bg-black p-4 sm:p-5 md:col-span-7">
+              <div>
+                <div className="relative aspect-4/5 w-full overflow-hidden border border-white/20 sm:aspect-video md:aspect-4/3 lg:aspect-video">
+                  <Image
+                    key={active.id}
+                    src={active.image}
+                    alt={active.title}
+                    fill
+                    sizes="(max-width: 767px) 100vw, 55vw"
+                    className="editorial-photo object-cover transition-transform duration-700 hover:scale-105"
+                  />
 
-                <div className="absolute top-3.5 left-3.5 z-10 border border-white bg-black px-3 py-1.5 font-mono text-[10px] font-medium tracking-[0.12em] text-white uppercase">
-                  {active.badge}
+                  <div className="absolute top-3.5 left-3.5 z-10 border border-white bg-black px-3 py-1.5 font-mono text-[10px] font-medium tracking-[0.12em] text-white uppercase">
+                    {active.badge}
+                  </div>
                 </div>
+
+                <h3 className="mt-5 min-h-11.5 font-display text-[20px] leading-[1.15] font-bold tracking-[-0.01em] uppercase md:min-h-12.25 md:text-[21px] lg:min-h-13.25 lg:text-[23px] xl:min-h-15 xl:text-[26px]">
+                  {active.title}
+                </h3>
               </div>
 
-              <div className="mt-5 flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
-                <div className="max-w-xl">
-                  <h3 className="font-display text-[20px] leading-[1.15] font-bold tracking-[-0.01em] uppercase md:text-[21px] lg:text-[23px] xl:text-[26px]">
-                    {active.title}
-                  </h3>
-                  <p className="mt-2.5 text-[13px] leading-[1.55] font-light text-white/80 sm:text-[14px]">
+              <div className="mt-4">
+                <div className="flex flex-col justify-between gap-5 lg:flex-row lg:items-end">
+                  <p className="h-28 max-w-xl text-[13px] leading-[1.55] font-light text-white/80 sm:h-auto sm:min-h-16.5 sm:text-[14px]">
                     {active.description}
                   </p>
+
+                  {onSelectDestination ? (
+                    <button
+                      type="button"
+                      onClick={() => onSelectDestination(active)}
+                      className={requestCtaClassName}
+                    >
+                      {t.destinations.requestCta}
+                    </button>
+                  ) : (
+                    <a href="#builder" className={requestCtaClassName}>
+                      {t.destinations.requestCta}
+                    </a>
+                  )}
                 </div>
 
-                {onSelectDestination ? (
-                  <button
-                    type="button"
-                    onClick={() => onSelectDestination(active)}
-                    className={requestCtaClassName}
-                  >
-                    {t.destinations.requestCta}
-                  </button>
-                ) : (
-                  <a href="#builder" className={requestCtaClassName}>
-                    {t.destinations.requestCta}
-                  </a>
-                )}
-              </div>
-
-              <div className="mt-5 border-t border-white/25 pt-4 font-mono text-[10px] leading-[1.3] tracking-widest uppercase md:hidden">
-                <div className="flex items-center justify-between gap-3 border-b border-white/20 pb-2.5">
-                  <span className="text-white/65">
-                    {t.destinations.coordinatesLabel}
-                  </span>
-                  <span className="font-semibold text-white">
-                    {active.coords}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-3 border-b border-white/20 py-2.5">
-                  <span className="text-white/65">
-                    {t.destinations.seasonLabel}
-                  </span>
-                  <span className="font-semibold text-white">
-                    {active.season}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-3 pt-2.5">
-                  <span className="text-white/65">
-                    {t.destinations.durationLabel}
-                  </span>
-                  <span className="font-semibold text-white">
-                    {active.duration}
-                  </span>
+                <div className="mt-5 border-t border-white/25 pt-4 font-mono text-[10px] leading-[1.35] tracking-[0.08em] uppercase min-[22.5rem]:tracking-widest md:hidden">
+                  <div className="flex flex-col gap-1 border-b border-white/20 pb-2.5 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3">
+                    <span className="text-white/65">
+                      {t.destinations.coordinatesLabel}
+                    </span>
+                    <span className="font-semibold text-white min-[22.5rem]:text-right">
+                      {active.coords}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1 border-b border-white/20 py-2.5 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3">
+                    <span className="text-white/65">
+                      {t.destinations.seasonLabel}
+                    </span>
+                    <span className="font-semibold text-white min-[22.5rem]:text-right">
+                      {active.season}
+                    </span>
+                  </div>
+                  <div className="flex flex-col gap-1 pt-2.5 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3">
+                    <span className="text-white/65">
+                      {t.destinations.durationLabel}
+                    </span>
+                    <span className="font-semibold text-white min-[22.5rem]:text-right">
+                      {active.duration}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
