@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type MouseEvent } from "react";
 import { Menu, X } from "lucide-react";
 import { useLanguage } from "../_context/LanguageContext";
 
@@ -101,7 +101,38 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
     setMobileMenuOpen(false);
   }, []);
 
+  const handleMobileNavClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+      const targetId = href.replace("#", "");
+      const targetEl = document.getElementById(targetId);
+      if (!targetEl) {
+        setMobileMenuOpen(false);
+        return;
+      }
+
+      event.preventDefault();
+      document.body.style.overflow = "";
+      setMobileMenuOpen(false);
+
+      const headerEl = document.querySelector("header");
+      const headerBottom = headerEl
+        ? headerEl.getBoundingClientRect().bottom
+        : 56;
+
+      const targetTop =
+        targetEl.getBoundingClientRect().top + window.scrollY - headerBottom;
+
+      window.history.pushState(null, "", href);
+      window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: "smooth",
+      });
+    },
+    [],
+  );
+
   const handleBookingClick = () => {
+    document.body.style.overflow = "";
     setMobileMenuOpen(false);
     if (onOpenBooking) {
       onOpenBooking();
@@ -249,7 +280,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
             >
               <a
                 href={item.href}
-                onClick={handleCloseMenu}
+                onClick={(e) => handleMobileNavClick(e, item.href)}
                 className="flex items-baseline justify-between font-display text-xl font-bold tracking-tight uppercase opacity-85 transition-opacity duration-300 ease-out hover:opacity-100"
               >
                 <span>{item.label}</span>

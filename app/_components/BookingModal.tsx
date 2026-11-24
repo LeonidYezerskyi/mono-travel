@@ -219,16 +219,25 @@ export function BookingModal({
   useEffect(() => {
     if (!isOpen) return;
 
-    const previousOverflow = document.body.style.overflow;
-    const previousPaddingRight = document.body.style.paddingRight;
+    const html = document.documentElement;
+    const body = document.body;
+
+    const previousHtmlOverflow = html.style.overflow;
+    const previousHtmlOverscroll = html.style.overscrollBehavior;
+    const previousOverflow = body.style.overflow;
+    const previousOverscroll = body.style.overscrollBehavior;
+    const previousPaddingRight = body.style.paddingRight;
 
     const scrollbarWidth =
       window.innerWidth - document.documentElement.clientWidth;
 
-    document.body.style.overflow = "hidden";
+    html.style.overflow = "hidden";
+    html.style.overscrollBehavior = "none";
+    body.style.overflow = "hidden";
+    body.style.overscrollBehavior = "none";
 
     if (scrollbarWidth > 0) {
-      document.body.style.paddingRight = `${scrollbarWidth}px`;
+      body.style.paddingRight = `${scrollbarWidth}px`;
     }
 
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -240,8 +249,11 @@ export function BookingModal({
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      document.body.style.overflow = previousOverflow;
-      document.body.style.paddingRight = previousPaddingRight;
+      html.style.overflow = previousHtmlOverflow;
+      html.style.overscrollBehavior = previousHtmlOverscroll;
+      body.style.overflow = previousOverflow;
+      body.style.overscrollBehavior = previousOverscroll;
+      body.style.paddingRight = previousPaddingRight;
 
       window.removeEventListener("keydown", handleKeyDown);
     };
@@ -316,7 +328,7 @@ export function BookingModal({
         paddingTop: "calc(0.75rem + env(safe-area-inset-top))",
         paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))",
       }}
-      className={`fixed inset-0 z-70 flex items-center justify-center bg-black/80 px-3 sm:p-4 md:p-6 ${
+      className={`fixed inset-0 z-70 flex items-center justify-center overscroll-none bg-black/80 px-3 sm:p-4 md:p-6 ${
         isOpen ? "animate-modal-fade-in" : "animate-modal-fade-out"
       }`}
     >
@@ -326,7 +338,7 @@ export function BookingModal({
           maxHeight:
             "calc(100dvh - 1.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom))",
         }}
-        className="relative flex w-full flex-col overflow-hidden bg-white text-black sm:max-h-[90dvh] sm:max-w-2xl sm:border sm:border-black"
+        className="relative flex w-full flex-col overflow-hidden overscroll-contain bg-white text-black sm:max-h-[90dvh] sm:max-w-2xl sm:border sm:border-black"
       >
         <div className="flex shrink-0 items-center justify-between border-b border-black bg-white px-4 py-3 sm:px-6 md:px-8 lg:py-2.5">
           <div className="min-w-0 pr-3">
@@ -351,7 +363,7 @@ export function BookingModal({
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 md:px-8 md:py-5 lg:py-3">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 md:px-8 md:py-5 lg:py-3">
           {isSuccessVisible ? (
             <div className="border border-black bg-black p-6 text-white sm:p-8">
               <p className="font-mono text-[10px] tracking-[0.14em] text-white/65 uppercase">
