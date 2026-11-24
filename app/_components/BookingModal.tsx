@@ -328,7 +328,7 @@ export function BookingModal({
         paddingTop: "calc(0.75rem + env(safe-area-inset-top))",
         paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))",
       }}
-      className={`fixed inset-0 z-70 flex items-center justify-center overscroll-none bg-black/80 px-3 sm:p-4 md:p-6 ${
+      className={`fixed inset-0 z-70 flex touch-none items-center justify-center overscroll-none bg-black/80 px-3 sm:p-4 md:p-6 ${
         isOpen ? "animate-modal-fade-in" : "animate-modal-fade-out"
       }`}
     >
@@ -363,7 +363,7 @@ export function BookingModal({
           </button>
         </div>
 
-        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 sm:px-6 md:px-8 md:py-5 lg:py-3">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain touch-pan-y px-4 py-4 sm:px-6 md:px-8 md:py-5 lg:py-3">
           {isSuccessVisible ? (
             <div className="border border-black bg-black p-6 text-white sm:p-8">
               <p className="font-mono text-[10px] tracking-[0.14em] text-white/65 uppercase">
