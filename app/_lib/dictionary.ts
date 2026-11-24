@@ -554,7 +554,7 @@ export const dictionary: Record<Language, Dictionary> = {
         { label: "PHILOSOPHY", href: "#philosophy" },
         { label: "DESTINATIONS 2026", href: "#destinations" },
         { label: "ITINERARIES", href: "#itinerary" },
-        { label: "BUILDER", href: "#builder" },
+        { label: "CUSTOMIZER", href: "#builder" },
       ],
       clubTitle: "[ PRIVATE CLUB ]",
       clubSubtitle: "Receive private expedition dispatches 4 times a year.",

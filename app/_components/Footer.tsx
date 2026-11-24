@@ -1,7 +1,7 @@
 "use client";
 
-import type { SyntheticEvent } from "react";
-import { useState } from "react";
+import type { MouseEvent, SyntheticEvent } from "react";
+import { useCallback, useState } from "react";
 import { useLanguage } from "../_context/LanguageContext";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -18,6 +18,36 @@ export function Footer() {
     "idle",
   );
   const [copied, setCopied] = useState(false);
+
+  const handleAnchorClick = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>, href: string) => {
+      if (!href.startsWith("#") || href === "#") return;
+      if (window.matchMedia("(min-width: 768px)").matches) return;
+
+      const targetId = href.slice(1);
+      const targetEl = document.getElementById(targetId);
+      if (!targetEl) return;
+
+      event.preventDefault();
+      document.documentElement.style.overflow = "";
+      document.body.style.overflow = "";
+
+      const headerEl = document.querySelector("header");
+      const headerBottom = headerEl
+        ? headerEl.getBoundingClientRect().bottom
+        : 56;
+
+      const targetTop =
+        targetEl.getBoundingClientRect().top + window.scrollY - headerBottom;
+
+      window.history.pushState(null, "", href);
+      window.scrollTo({
+        top: Math.max(0, targetTop),
+        behavior: "smooth",
+      });
+    },
+    [],
+  );
 
   const handleSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -101,6 +131,7 @@ export function Footer() {
                 <li key={link.href}>
                   <a
                     href={link.href}
+                    onClick={(e) => handleAnchorClick(e, link.href)}
                     className="inline-flex items-center gap-2.5 text-white transition-opacity hover:opacity-70"
                   >
                     <span
