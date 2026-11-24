@@ -67,6 +67,11 @@ export function MonoLandingClient() {
       style={{ paddingTop: "env(safe-area-inset-top)" }}
       className="min-h-screen w-full max-w-full overflow-x-clip bg-black text-white"
     >
+      <div
+        aria-hidden="true"
+        style={{ height: "env(safe-area-inset-top)" }}
+        className="pointer-events-none fixed inset-x-0 top-0 z-50 bg-black"
+      />
       <WorldClockTicker />
       <Header onOpenBooking={handleOpenConsultation} />
 
