@@ -312,7 +312,11 @@ export function BookingModal({
       aria-modal="true"
       aria-labelledby="booking-modal-title"
       onClick={onClose}
-      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 sm:p-4 md:p-6 ${
+      style={{
+        paddingTop: "calc(0px + env(safe-area-inset-top))",
+        paddingBottom: "calc(0px + env(safe-area-inset-bottom))",
+      }}
+      className={`fixed inset-0 z-70 flex items-center justify-center bg-black/80 sm:p-4 md:p-6 ${
         isOpen ? "animate-modal-fade-in" : "animate-modal-fade-out"
       }`}
     >
