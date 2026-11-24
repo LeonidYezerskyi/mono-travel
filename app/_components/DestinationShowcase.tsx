@@ -170,7 +170,7 @@ export function DestinationShowcase({
                   {metaRows.map((row) => (
                     <div
                       key={row.label}
-                      className="flex flex-col gap-1 py-2.5 last:pb-0 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3"
+                      className="flex flex-col gap-1 py-2.5 last:pb-0 min-[358px]:h-10 min-[22.5rem]:flex-row min-[22.5rem]:items-center min-[22.5rem]:justify-between min-[22.5rem]:gap-3 md:h-auto"
                     >
                       <span className="text-white/65">{row.label}</span>
                       <span className="font-semibold text-white min-[22.5rem]:text-right">
