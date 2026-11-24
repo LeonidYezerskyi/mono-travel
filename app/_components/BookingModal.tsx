@@ -313,16 +313,20 @@ export function BookingModal({
       aria-labelledby="booking-modal-title"
       onClick={onClose}
       style={{
-        paddingTop: "calc(0px + env(safe-area-inset-top))",
-        paddingBottom: "calc(0px + env(safe-area-inset-bottom))",
+        paddingTop: "calc(0.75rem + env(safe-area-inset-top))",
+        paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))",
       }}
-      className={`fixed inset-0 z-70 flex items-center justify-center bg-black/80 sm:p-4 md:p-6 ${
+      className={`fixed inset-0 z-70 flex items-center justify-center bg-black/80 px-3 sm:p-4 md:p-6 ${
         isOpen ? "animate-modal-fade-in" : "animate-modal-fade-out"
       }`}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative flex max-h-dvh w-screen flex-col overflow-y-auto bg-white text-black sm:max-h-[90dvh] sm:w-full sm:max-w-2xl sm:border sm:border-black"
+        style={{
+          maxHeight:
+            "calc(100dvh - 1.5rem - env(safe-area-inset-top) - env(safe-area-inset-bottom))",
+        }}
+        className="relative flex w-full flex-col overflow-hidden bg-white text-black sm:max-h-[90dvh] sm:max-w-2xl sm:border sm:border-black"
       >
         <div className="flex shrink-0 items-center justify-between border-b border-black bg-white px-4 py-3 sm:px-6 md:px-8 lg:py-2.5">
           <div className="min-w-0 pr-3">
@@ -347,7 +351,7 @@ export function BookingModal({
           </button>
         </div>
 
-        <div className="min-h-0 flex-none px-4 py-4 sm:px-6 md:px-8 md:py-5 lg:py-3">
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4 sm:px-6 md:px-8 md:py-5 lg:py-3">
           {isSuccessVisible ? (
             <div className="border border-black bg-black p-6 text-white sm:p-8">
               <p className="font-mono text-[10px] tracking-[0.14em] text-white/65 uppercase">
