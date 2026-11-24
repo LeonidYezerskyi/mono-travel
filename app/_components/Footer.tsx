@@ -196,13 +196,13 @@ export function Footer() {
 
           <div className="flex flex-wrap items-center gap-5 text-white/80 sm:col-span-5 sm:justify-end lg:col-span-4">
             {t.footer.legalLinks.map((item) => (
-              <a
+              <span
                 key={item.label}
-                href={item.href}
-                className="whitespace-nowrap transition-colors hover:text-white"
+                aria-disabled="true"
+                className="cursor-default whitespace-nowrap select-none"
               >
                 {item.label}
-              </a>
+              </span>
             ))}
           </div>
         </div>
