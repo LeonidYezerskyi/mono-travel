@@ -63,7 +63,10 @@ export function MonoLandingClient() {
   }, []);
 
   return (
-    <div className="min-h-screen w-full max-w-full overflow-x-clip bg-black text-white">
+    <div
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
+      className="min-h-screen w-full max-w-full overflow-x-clip bg-black text-white"
+    >
       <WorldClockTicker />
       <Header onOpenBooking={handleOpenConsultation} />
 
