@@ -312,7 +312,9 @@ export function BookingModal({
       aria-modal="true"
       aria-labelledby="booking-modal-title"
       onClick={onClose}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 sm:p-4 md:p-6"
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black/80 sm:p-4 md:p-6 ${
+        isOpen ? "animate-modal-fade-in" : "animate-modal-fade-out"
+      }`}
     >
       <div
         onClick={(e) => e.stopPropagation()}

@@ -131,3 +131,16 @@ body {
     background: #ffffff;
   }
 }
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-modal-fade-in {
+  animation: modalFadeIn 300ms ease-out both;
+}

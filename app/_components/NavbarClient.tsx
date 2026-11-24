@@ -209,7 +209,7 @@ export function NavbarClient({ onOpenBooking }: NavbarClientProps) {
         aria-modal="true"
         aria-hidden={!mobileMenuOpen}
         aria-label="Mobile navigation"
-        className={`fixed inset-0 z-50 flex flex-col justify-between bg-black p-6 text-white transition-all duration-300 ease-out will-change-transform md:hidden ${
+        className={`fixed inset-0 z-50 flex flex-col justify-between bg-black p-6 text-white transition-all duration-500 ease-out will-change-transform md:hidden ${
           mobileMenuOpen
             ? "pointer-events-auto translate-x-0 opacity-100"
             : "pointer-events-none translate-x-full opacity-0"
