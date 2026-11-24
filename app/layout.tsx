@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Unbounded, Manrope, Cormorant_Garamond } from "next/font/google";
+import { ServiceWorkerRegister } from "./_components/ServiceWorkerRegister";
 import { LanguageProvider } from "./_context/LanguageContext";
 import "./_styles/globals.css";
 
@@ -22,6 +23,12 @@ const cormorantGaramond = Cormorant_Garamond({
   variable: "--font-cormorant",
 });
 
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   title: {
     default: "MONO TRAVEL — Architectural Expeditions",
@@ -38,6 +45,14 @@ export const metadata: Metadata = {
     "Patagonia",
     "Morocco",
   ],
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "MONO TRAVEL",
+  },
+  formatDetection: {
+    telephone: false,
+  },
   openGraph: {
     title: "MONO TRAVEL — Architectural Expeditions",
     description: "Private expeditions through silence, form, and space.",
@@ -45,6 +60,7 @@ export const metadata: Metadata = {
     locale: "en_US",
   },
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,6 +73,7 @@ export default function RootLayout({
       className={`${unbounded.variable} ${manrope.variable} ${cormorantGaramond.variable}`}
     >
       <body className="bg-background text-foreground font-sans antialiased">
+        <ServiceWorkerRegister />
         <LanguageProvider>{children}</LanguageProvider>
       </body>
     </html>
