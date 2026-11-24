@@ -22,7 +22,7 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
     <section className="grid-bg relative flex min-h-[calc(100vh-5rem)] flex-col justify-between overflow-hidden border-b border-white text-white">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0 flex select-none items-center justify-center opacity-5"
+        className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center opacity-5 select-none"
       >
         <span className="font-display text-[35vw] leading-none font-extrabold text-white uppercase">
           MONO
@@ -37,7 +37,7 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
         <h1 className="min-h-27 font-display text-[36px] leading-[0.95] font-extrabold tracking-[-0.03em] uppercase sm:min-h-41 sm:text-[54px] md:min-h-50 md:text-[68px] xl:min-h-42. xl:text-[84px]">
           <span className="block">{t.hero.titleLine1}</span>
           <span className="mt-1 inline-flex flex-wrap items-baseline gap-x-3 md:gap-x-5">
-            <span className="font-serif text-[38px] leading-[0.95] font-normal tracking-[-0.01em] uppercase italic sm:text-[54px] md:text-[68px] xl:text-[84px]">
+            <span className="font-serif text-[38px] leading-[0.95] font-normal tracking-[-0.01em] italic uppercase sm:text-[54px] md:text-[68px] xl:text-[84px]">
               {t.hero.titleAccent}
             </span>
             <span>{t.hero.titleLine2}</span>
@@ -48,11 +48,11 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
 
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-3xl">
-            <p className="h-34 text-[15px] leading-normal font-light text-white/90 md:h-auto md:text-base xl:text-[17px]">
+            <p className="h-34 text-[15px] leading-normal font-light text-white/90 min-[425px]:h-auto md:h-auto md:text-base xl:text-[17px]">
               {t.hero.subtitle}
             </p>
 
-            <div className="mt-5">
+            <div className="mt-5 min-[425px]:mt-3 md:mt-5">
               {onOpenConsultation ? (
                 <button
                   type="button"
@@ -69,11 +69,13 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] uppercase md:justify-end md:text-[11px]">
-            {badges.map((badge) => (
+          <div className="flex w-full flex-col items-start gap-3 font-mono text-[10px] leading-[1.2] tracking-[0.12em] uppercase min-[425px]:w-auto min-[425px]:flex-row min-[425px]:flex-wrap min-[425px]:items-center md:justify-end md:text-[11px]">
+            {badges.map((badge, idx) => (
               <span
                 key={badge}
-                className="min-w-44 border border-white px-3.5 py-2 text-center"
+                className={`min-w-44 border border-white px-3.5 py-2 text-center ${
+                  idx === 1 ? "self-end min-[425px]:self-auto" : ""
+                }`}
               >
                 {badge}
               </span>
@@ -85,7 +87,7 @@ export function HeroSection({ onOpenConsultation }: HeroSectionProps) {
       <div className="relative z-10 mx-auto my-6 w-full max-w-360 px-4 md:my-15 md:px-8 xl:px-12">
         <div className="border border-white bg-black p-2 md:p-2.5">
           <div className="group relative flex flex-col md:block md:h-65 lg:h-75 xl:h-82.5">
-            <div className="relative aspect-16/10 w-full overflow-hidden md:h-full md:aspect-auto">
+            <div className="relative aspect-16/10 w-full overflow-hidden md:aspect-auto md:h-full">
               <Image
                 src={heroImg}
                 alt={t.hero.cardAlt}

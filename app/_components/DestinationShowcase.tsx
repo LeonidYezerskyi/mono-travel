@@ -90,7 +90,7 @@ export function DestinationShowcase({
                         >
                           {item.code} / {item.country}
                         </span>
-                        <span className="mt-1.5 flex items-center font-display text-[15px] leading-[1.2] font-bold tracking-[-0.01em] uppercase md:h-12 md:text-[14px] lg:h-10 lg:text-[17px] xl:h-auto xl:text-[19px]">
+                        <span className="mt-1.5 flex h-9 items-center font-display text-[15px] leading-[1.2] font-bold tracking-[-0.01em] uppercase sm:h-auto md:h-12 md:text-[14px] lg:h-10 lg:text-[17px] xl:h-auto xl:text-[19px]">
                           {item.tabTitle}
                         </span>
                       </div>
@@ -140,7 +140,7 @@ export function DestinationShowcase({
                   </div>
                 </div>
 
-                <h3 className="mt-5 min-h-11.5 font-display text-[20px] leading-[1.15] font-bold tracking-[-0.01em] uppercase md:min-h-12.25 md:text-[21px] lg:min-h-13.25 lg:text-[23px] xl:min-h-15 xl:text-[26px]">
+                <h3 className="mt-5 h-17.25 font-display text-[20px] leading-[1.15] font-bold tracking-[-0.01em] uppercase sm:h-auto sm:min-h-11.5 md:min-h-12.25 md:text-[21px] lg:min-h-13.25 lg:text-[23px] xl:min-h-15 xl:text-[26px]">
                   {active.title}
                 </h3>
               </div>
